@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Data_Access;
 using EmployeeService.Domains;
+using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers.Home
@@ -9,10 +10,12 @@ namespace EmployeeService.Controllers.Home
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeRepository employeeRepository;
+        private readonly IConnectionsLogicLayer connectionsLogic;
 
-        public EmployeesController(IEmployeeRepository employeeRepository)
+        public EmployeesController(IEmployeeRepository employeeRepository, IConnectionsLogicLayer connectionsLogic)
         {
             this.employeeRepository = employeeRepository;
+            this.connectionsLogic = connectionsLogic;
         }
 
         [HttpGet("{id}")]
@@ -32,16 +35,16 @@ namespace EmployeeService.Controllers.Home
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Employee employee)
         {
-            var newEmployee = await employeeRepository.CreateEmployee(employee);
-            return Ok(newEmployee);
+            var result = await connectionsLogic.AddToConnection(employee);
+            return Ok(result);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put([FromBody] Employee employeeModel)
-        {
-            await employeeRepository.UpdateEmployee(employeeModel);
-            return Ok();
-        }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Put([FromBody] Employee employeeModel)
+        //{
+        //    await employeeRepository.UpdateEmployee(employeeModel);
+        //    return Ok();
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

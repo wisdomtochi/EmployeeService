@@ -1,5 +1,7 @@
 using EmployeeService.Data;
 using EmployeeService.Data_Access;
+using EmployeeService.Services.Implementations;
+using EmployeeService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,7 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 });
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IConnectionsLogicLayer, ConnectionsLogicLayer>();
 
 var app = builder.Build();
 
