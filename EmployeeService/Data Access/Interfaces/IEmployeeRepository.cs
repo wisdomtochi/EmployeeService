@@ -9,5 +9,6 @@ namespace EmployeeService.Data_Access
         Task<Employee> CreateEmployee(Employee employee);
         Task UpdateEmployee(Employee employeeModel);
         Task DeleteEmployee(int employeeId);
+
     }
 }

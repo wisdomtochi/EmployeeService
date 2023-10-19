@@ -17,6 +17,7 @@ namespace EmployeeService.Data_Access
         public async Task<IEnumerable<Employee>> GetAllEmployee()
         {
             var employee = await context.Employees.ToListAsync();
+
             return employee;
         }
 

@@ -3,7 +3,7 @@ using EmployeeService.Domains;
 using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmployeeService.Controllers.Home
+namespace EmployeeService.Controllers
 {
     [Route("api/home/[controller]")]
     [ApiController]
@@ -37,20 +37,6 @@ namespace EmployeeService.Controllers.Home
         {
             var result = await connectionsLogic.AddToConnection(employee);
             return Ok(result);
-        }
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put([FromBody] Employee employeeModel)
-        //{
-        //    await employeeRepository.UpdateEmployee(employeeModel);
-        //    return Ok();
-        //}
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            await employeeRepository.DeleteEmployee(id);
-            return Ok();
         }
     }
 }
