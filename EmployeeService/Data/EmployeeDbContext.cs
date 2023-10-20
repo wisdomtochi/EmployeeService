@@ -1,4 +1,5 @@
 ﻿using EmployeeService.Domains;
+using EmployeeService.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Data
@@ -15,37 +16,14 @@ namespace EmployeeService.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Connection> Connections { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<Employee>().HasData(
-                new Employee
-                {
-                    Id = 1,
-                    FirstName = "Miselyn",
-                    LastName = "Kisera",
-                    Gender = "F",
-                    Salary = 847300
-                },
-                new Employee
-                {
-                    Id = 2,
-                    FirstName = "Jurome",
-                    LastName = "Anthony",
-                    Gender = "M",
-                    Salary = 324300
-                },
-                new Employee
-                {
-                    Id = 3,
-                    FirstName = "Doseel",
-                    LastName = "Paul",
-                    Gender = "F",
-                    Salary = 332300
-                }
-                );
-            builder.Entity<Connection>()
-                .HasMany(e => e.EmployeeIds)
-                .WithMany(e => e.Id);
+            modelBuilder.Entity<Connection>()
+               .HasMany(e => e.Employees)
+               .WithMany(e => e.Connections);
+
+            modelBuilder.Seed();
+
         }
 
 

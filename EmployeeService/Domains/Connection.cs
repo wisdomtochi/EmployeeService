@@ -3,7 +3,6 @@
     public class Connection
     {
         public int Id { get; set; }
-
-        public List<int>? EmployeeIds { get; set; }
+        public List<Employee>? Employees { get; set; }
     }
 }
