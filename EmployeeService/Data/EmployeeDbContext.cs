@@ -13,6 +13,7 @@ namespace EmployeeService.Data
         }
 
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Connection> Connections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,7 +43,11 @@ namespace EmployeeService.Data
                     Salary = 332300
                 }
                 );
+            builder.Entity<Connection>()
+                .HasMany(e => e.EmployeeIds)
+                .WithMany(e => e.Id);
         }
+
 
     }
 }
