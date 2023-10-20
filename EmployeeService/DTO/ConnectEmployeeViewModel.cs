@@ -6,6 +6,6 @@ namespace EmployeeService.DTO
     {
         public int Id { get; set; }
         public List<Employee>? Connections { get; set; }
-        //public List<Employee>? ConnectionRequest { get; set; }
+        public List<Employee>? ConnectionRequest { get; set; }
     }
 }

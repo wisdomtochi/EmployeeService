@@ -14,11 +14,11 @@ namespace EmployeeService.Controllers
             this.connectionsLogic = connectionsLogic;
         }
 
-        [HttpGet]
-        public IActionResult GetConnections()
-        {
-            var result = connectionsLogic.ConnectionList();
-            return Ok(result);
-        }
+        //[HttpGet]
+        //public IActionResult GetConnections()
+        //{
+        //    var result = connectionsLogic.ConnectionList();
+        //    return Ok(result);
+        //}
     }
 }

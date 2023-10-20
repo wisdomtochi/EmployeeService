@@ -9,51 +9,41 @@ namespace EmployeeService.Services.Implementations
     {
         private readonly EmployeeDbContext context;
 
-        public ConnectionsLogicLayer(EmployeeDbContext context)
+        public ConnectionsLogicLayer(EmployeeDbContext context, ConnectEmployeeViewModel connectEmployee)
         {
             this.context = context;
         }
 
-        public async Task<string> AddToConnection(Employee employeeModel, ConnectEmployeeViewModel connectEmployee)
+        public async Task<string> AddToConnection(Employee employeeModel)
         {
             var emp = await context.Employees.FindAsync(employeeModel.Id);
 
-            List<Employee> empList = new List<Employee>();
-
-
-
-            if (emp != null)
+            if (emp == null)
             {
-
-                empList.Add(emp);
-                //Connections = connectEmployee.Connections.Add(emp);
+                return $"{employeeModel.FirstName} {employeeModel.LastName} could not not be found in the database";
             };
-
-            //connectEmployee.Connections.Add(emp);
 
             return "You have added a new connection";
         }
 
-            return $"{employeeModel.FirstName} {employeeModel.LastName} could not not be found in the database";
-        }
+        //public IEnumerable<Employee> ConnectionList()
+        //{
 
-    public IEnumerable<Employee> ConnectionList()
-    {
-        ConnectEmployeeViewModel connectEmployee = new();
-        return connectEmployee.Connections;
+        //    return connectEmployee.Connections;
+        //}
+
+        //public IEnumerable<Employee> ConnectionsRequestList()
+        //{
+        //    return connectEmployee.ConnectionRequest;
+        //}
+
+        //public void SendConnectionRequest(Employee emp, ConnectEmployeeViewModel connectEmployee)
+        //{
+        //    if (connectEmployee.Id == emp.Id)
+        //    {
+        //        Employee employee = new();
+        //        connectEmployee.ConnectionRequest.Add(employee);
+        //    }
+        //}
     }
-
-    public IEnumerable<Employee> ConnectionsRequestList(ConnectEmployeeViewModel connectEmployee)
-    {
-        return connectEmployee.ConnectionRequest;
-    }
-
-    public void SendConnectionRequest(Employee emp, ConnectEmployeeViewModel connectEmployee)
-    {
-        //Employee emp = new();
-
-
-        connectEmployee.ConnectionRequest.Add(emp);
-    }
-}
 }

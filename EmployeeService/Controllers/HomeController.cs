@@ -35,7 +35,21 @@ namespace EmployeeService.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Employee employee)
         {
-            var result = await connectionsLogic.AddToConnection(employee);
+            var result = await employeeRepository.CreateEmployee(employee);
+            return Ok(result);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update([FromBody] Employee employee)
+        {
+            var emp = employeeRepository.UpdateEmployee(employee);
+            return Ok(emp);
+        }
+
+        [HttpDelete("id")]
+        public IActionResult Delete(int id)
+        {
+            var result = employeeRepository.DeleteEmployee(id);
             return Ok(result);
         }
     }
