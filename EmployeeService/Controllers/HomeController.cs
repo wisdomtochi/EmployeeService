@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/home/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -19,35 +19,35 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetEmployee(int id)
         {
             var emp = await employeeRepository.GetEmployee(id);
             return Ok(emp);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetEmployees()
         {
             var emp = await employeeRepository.GetAllEmployee();
             return Ok(emp);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Employee employee)
+        public async Task<IActionResult> CreateEmployee([FromBody] Employee employee)
         {
             var result = await employeeRepository.CreateEmployee(employee);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromBody] Employee employee)
+        public IActionResult UpdateEmployee([FromBody] Employee employee)
         {
             var emp = employeeRepository.UpdateEmployee(employee);
             return Ok(emp);
         }
 
         [HttpDelete("id")]
-        public IActionResult Delete(int id)
+        public IActionResult DeleteEmployee(int id)
         {
             var result = employeeRepository.DeleteEmployee(id);
             return Ok(result);

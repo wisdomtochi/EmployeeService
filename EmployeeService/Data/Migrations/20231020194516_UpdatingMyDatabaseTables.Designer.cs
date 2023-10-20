@@ -2,6 +2,7 @@
 using EmployeeService.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeService.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    partial class EmployeeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231020194516_UpdatingMyDatabaseTables")]
+    partial class UpdatingMyDatabaseTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,6 +67,32 @@ namespace EmployeeService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Employees");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FirstName = "Miselyn",
+                            Gender = "F",
+                            LastName = "Kisera",
+                            Salary = 847300
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FirstName = "Jurome",
+                            Gender = "M",
+                            LastName = "Anthony",
+                            Salary = 324300
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FirstName = "Doseel",
+                            Gender = "F",
+                            LastName = "Paul",
+                            Salary = 332300
+                        });
                 });
 
             modelBuilder.Entity("ConnectionEmployee", b =>

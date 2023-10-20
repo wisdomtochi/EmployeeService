@@ -10,15 +10,15 @@ namespace EmployeeService.DTO
             modelBuilder.Entity<Employee>().HasData(
                 new Employee
                 {
-                    Id = 1,
-                    FirstName = "Miselyn",
+                    Id = 3,
+                    FirstName = "Misyn",
                     LastName = "Kisera",
                     Gender = "F",
                     Salary = 847300
                 },
                 new Employee
                 {
-                    Id = 2,
+                    Id = 4,
                     FirstName = "Jurome",
                     LastName = "Anthony",
                     Gender = "M",
@@ -26,7 +26,7 @@ namespace EmployeeService.DTO
                 },
                 new Employee
                 {
-                    Id = 3,
+                    Id = 5,
                     FirstName = "Doseel",
                     LastName = "Paul",
                     Gender = "F",

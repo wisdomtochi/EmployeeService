@@ -1,12 +1,11 @@
 ﻿using EmployeeService.Domains;
-using EmployeeService.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Data
 {
     public class EmployeeDbContext : DbContext
     {
-        public EmployeeDbContext() { }
+        //public EmployeeDbContext() { }
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options)
             : base(options)
         {
@@ -18,11 +17,11 @@ namespace EmployeeService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Connection>()
-               .HasMany(e => e.Employees)
-               .WithMany(e => e.Connections);
+            modelBuilder.Entity<Employee>()
+               .HasMany(e => e.Connections)
+               .WithMany(e => e.Employees);
 
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
 
         }
 
