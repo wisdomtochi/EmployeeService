@@ -49,15 +49,15 @@ namespace EmployeeService.Services.Implementations
             return " The employee or Customer could not be found in the database";
         }
 
-        public async Task<List<Connection>> GetConnectionList(int Id)
+        public async Task<IEnumerable<Connection>> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
             return (List<Connection>)(IEnumerable)connectEmployee.Employees;
         }
 
-        public IEnumerable<Connection> ConnectionList()
+        public async Task<IEnumerable<Connection>> ConnectionList()
         {
-            return context.Connections.ToList();
+            return await context.Connections.ToListAsync();
         }
 
         //public IEnumerable<Employee> ConnectionsRequestList()

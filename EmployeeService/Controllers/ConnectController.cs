@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/connect/[action]")]
     [ApiController]
     public class ConnectController : ControllerBase
     {
@@ -14,11 +14,18 @@ namespace EmployeeService.Controllers
             this.connectionsLogic = connectionsLogic;
         }
 
-        //[HttpGet]
-        //public IActionResult GetConnections()
-        //{
-        //    var result = connectionsLogic.ConnectionList();
-        //    return Ok(result);
-        //}
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetEmployeeConnectionList(int Id)
+        {
+            var result = await connectionsLogic.GetEmployeeConnectionList(Id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AllConnections()
+        {
+            var result = await connectionsLogic.ConnectionList();
+            return Ok(result);
+        }
     }
 }
