@@ -1,6 +1,5 @@
 using EmployeeService.Data;
 using EmployeeService.Data_Access;
-using EmployeeService.DTO;
 using EmployeeService.Services.Implementations;
 using EmployeeService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +25,6 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IConnectionsLogicLayer, ConnectionsLogicLayer>();
-builder.Services.AddScoped<ConnectEmployeeViewModel>();
 
 var app = builder.Build();
 

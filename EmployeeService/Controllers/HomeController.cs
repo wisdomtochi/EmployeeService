@@ -5,17 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/home/[action]")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeRepository employeeRepository;
-        private readonly IConnectionsLogicLayer connectionsLogic;
 
         public EmployeesController(IEmployeeRepository employeeRepository, IConnectionsLogicLayer connectionsLogic)
         {
             this.employeeRepository = employeeRepository;
-            this.connectionsLogic = connectionsLogic;
         }
 
         [HttpGet("{id}")]
