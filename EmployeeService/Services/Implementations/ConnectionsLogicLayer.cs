@@ -20,18 +20,30 @@ namespace EmployeeService.Services.Implementations
             Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
             Employee connection = await context.Employees.FirstOrDefaultAsync(x => x.Id == connectionId);
 
-            if (employee != null && connection != null)
+            if (employee != null)
             {
+                Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
 
-
-                if (!employee.Connections.Contains(connection))
+                if (existingConnection == null)
                 {
-                    employee.Connections.Add(connection);
+                    existingConnection = new Connection
+                    {
+                        Id = employeeId,
+                        Employees = new List<Employee>()
+                    };
+
+                    await context.Connections.AddAsync(existingConnection);
+                    await context.SaveChangesAsync();
+                }
+
+                if (!existingConnection.Employees.Contains(connection))
+                {
+                    existingConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
                 }
                 else
                 {
-                    return "Already in your connections";
+                    return "Connection already exists";
                 }
             };
             return " The employee or Customer could not be found in the database";
