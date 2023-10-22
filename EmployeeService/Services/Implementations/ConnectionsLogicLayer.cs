@@ -20,7 +20,7 @@ namespace EmployeeService.Services.Implementations
             Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
             Employee connection = await context.Employees.FirstOrDefaultAsync(x => x.Id == connectionId);
 
-            if (employee != null)
+            if (employee != null && connection != null)
             {
                 Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
 
@@ -40,6 +40,7 @@ namespace EmployeeService.Services.Implementations
                 {
                     existingConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
+                    return "Added to Connection";
                 }
                 else
                 {
@@ -49,15 +50,17 @@ namespace EmployeeService.Services.Implementations
             return " The employee or Customer could not be found in the database";
         }
 
-        public async Task<IEnumerable<Connection>> GetEmployeeConnectionList(int Id)
+        public async Task<IEnumerable> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
-            return (List<Connection>)(IEnumerable)connectEmployee.Employees;
+            var empList = connectEmployee.Employees;
+            return empList;
         }
 
         public async Task<IEnumerable<Connection>> ConnectionList()
         {
-            return await context.Connections.ToListAsync();
+            var empList = await context.Connections.ToListAsync();
+            return empList;
         }
 
         //public IEnumerable<Employee> ConnectionsRequestList()

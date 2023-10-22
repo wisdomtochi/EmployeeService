@@ -27,5 +27,12 @@ namespace EmployeeService.Controllers
             var result = await connectionsLogic.ConnectionList();
             return Ok(result);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddEmployeeToConnection(int employeeId, int connectionId)
+        {
+            var result = await connectionsLogic.AddToConnection(employeeId, connectionId);
+            return Ok(result);
+        }
     }
 }
