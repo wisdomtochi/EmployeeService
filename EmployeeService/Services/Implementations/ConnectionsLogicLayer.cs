@@ -2,7 +2,6 @@
 using EmployeeService.Domains;
 using EmployeeService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections;
 
 namespace EmployeeService.Services.Implementations
 {
@@ -50,7 +49,7 @@ namespace EmployeeService.Services.Implementations
             return " The employee or Customer could not be found in the database";
         }
 
-        public async Task<IEnumerable> GetEmployeeConnectionList(int Id)
+        public async Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
             var empList = connectEmployee.Employees;

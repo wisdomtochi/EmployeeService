@@ -8,6 +8,6 @@ namespace EmployeeService.Services.Interfaces
         Task<IEnumerable<Connection>> ConnectionList();
         //IEnumerable<Employee> ConnectionsRequestList();
         //void SendConnectionRequest(Employee emp, ConnectEmployeeViewModel connectEmployee);
-        Task<IEnumerable> GetEmployeeConnectionList(int Id);
+        Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id);
     }
 }
