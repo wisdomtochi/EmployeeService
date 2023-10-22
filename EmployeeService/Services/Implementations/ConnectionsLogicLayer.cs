@@ -28,23 +28,26 @@ namespace EmployeeService.Services.Implementations
                     existingConnection = new Connection
                     {
                         Id = employeeId,
-                        Employees = new List<Employee>()
+                        Employees = new List<Employee>() { connection }
                     };
 
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
                 }
-
-                if (!existingConnection.Employees.Contains(connection))
-                {
-                    existingConnection.Employees.Add(connection);
-                    await context.SaveChangesAsync();
-                    return "Added to Connection";
-                }
                 else
                 {
-                    return "Connection already exists";
+                    if (!existingConnection.Employees.Contains(connection))
+                    {
+                        existingConnection.Employees.Add(connection);
+                        await context.SaveChangesAsync();
+                        return "Added to Connection";
+                    }
+                    else
+                    {
+                        return "Connection already exists";
+                    }
                 }
+
             };
             return " The employee or Customer could not be found in the database";
         }
