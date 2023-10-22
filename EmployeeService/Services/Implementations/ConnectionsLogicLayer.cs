@@ -28,24 +28,22 @@ namespace EmployeeService.Services.Implementations
                     existingConnection = new Connection
                     {
                         Id = employeeId,
-                        Employees = new List<Employee> { employee, connection }
+                        Employees = new List<Employee> { connection }
                     };
 
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
                 }
+
+                if (!existingConnection.Employees.Contains(connection))
+                {
+                    existingConnection.Employees.Add(connection);
+                    await context.SaveChangesAsync();
+                    return "Added to Connection";
+                }
                 else
                 {
-                    if (!existingConnection.Employees.Contains(connection))
-                    {
-                        existingConnection.Employees.Add(connection);
-                        await context.SaveChangesAsync();
-                        return "Added to Connection";
-                    }
-                    else
-                    {
-                        return "Connection already exists";
-                    }
+                    return "Connection already exists";
                 }
             }
             return " The employee or Customer could not be found in the database";
@@ -66,7 +64,26 @@ namespace EmployeeService.Services.Implementations
 
         public async Task<string> DeleteFromConnection(int employeeId, int connectionId)
         {
-            await context.Employees.FirstOrDefaultAsync(employeeId);
+            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
+            Employee connection = await context.Employees.FirstOrDefaultAsync(x => x.Id == connectionId);
+
+            if (employee != null && connection != null)
+            {
+                Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
+
+                if (existingConnection == null)
+                {
+                    return "Cannot delete. Add to connection first";
+                }
+                else
+                {
+                    existingConnection.Employees.Remove(connection);
+                    await context.SaveChangesAsync();
+                    return "Employee successfully deleted from your connections";
+                }
+            }
+
+            return "The Employee Id or Connection Id could not be found in the database";
         }
 
         //public IEnumerable<Employee> ConnectionsRequestList()
