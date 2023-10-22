@@ -20,9 +20,6 @@ namespace EmployeeService.Data
             modelBuilder.Entity<Employee>()
                .HasMany(e => e.Connections)
                .WithMany(e => e.Employees);
-
-            //modelBuilder.Seed();
-
         }
 
 

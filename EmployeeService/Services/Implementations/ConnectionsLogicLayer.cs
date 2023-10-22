@@ -28,7 +28,7 @@ namespace EmployeeService.Services.Implementations
                     existingConnection = new Connection
                     {
                         Id = employeeId,
-                        Employees = new List<Employee>() { connection }
+                        Employees = new List<Employee>() { employee, connection }
                     };
 
                     await context.Connections.AddAsync(existingConnection);
@@ -47,7 +47,6 @@ namespace EmployeeService.Services.Implementations
                         return "Connection already exists";
                     }
                 }
-
             };
             return " The employee or Customer could not be found in the database";
         }
