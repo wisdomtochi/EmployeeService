@@ -28,7 +28,7 @@ namespace EmployeeService.Services.Implementations
                     existingConnection = new Connection
                     {
                         Id = employeeId,
-                        Employees = new List<Employee>() { employee, connection }
+                        Employees = new List<Employee> { employee, connection }
                     };
 
                     await context.Connections.AddAsync(existingConnection);
@@ -47,7 +47,7 @@ namespace EmployeeService.Services.Implementations
                         return "Connection already exists";
                     }
                 }
-            };
+            }
             return " The employee or Customer could not be found in the database";
         }
 
@@ -62,6 +62,11 @@ namespace EmployeeService.Services.Implementations
         {
             var empList = await context.Connections.ToListAsync();
             return empList;
+        }
+
+        public async Task<string> DeleteFromConnection(int employeeId, int connectionId)
+        {
+            await context.Employees.FirstOrDefaultAsync(employeeId);
         }
 
         //public IEnumerable<Employee> ConnectionsRequestList()

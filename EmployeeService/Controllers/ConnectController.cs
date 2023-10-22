@@ -1,5 +1,4 @@
-﻿using EmployeeService.Domains;
-using EmployeeService.Services.Interfaces;
+﻿using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
@@ -16,9 +15,9 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEmployeeConnectionList(Employee employee)
+        public async Task<ActionResult> GetEmployeeConnectionList(int id)
         {
-            var result = await connectionsLogic.GetEmployeeConnectionList(employee.Id);
+            var result = await connectionsLogic.GetEmployeeConnectionList(id);
             return Ok(result);
         }
 
