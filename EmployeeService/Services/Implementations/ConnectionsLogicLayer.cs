@@ -31,6 +31,8 @@ namespace EmployeeService.Services.Implementations
                         Employees = new List<Employee> { connection }
                     };
 
+                    //if(employee.)
+
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
                 }

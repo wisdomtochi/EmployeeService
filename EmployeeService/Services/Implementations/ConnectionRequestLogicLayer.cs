@@ -43,6 +43,22 @@ namespace EmployeeService.Services.Implementations
             }
         }
 
+        public async Task<IEnumerable<ConnectionRequest>> GetAllConnectionRequest()
+        {
+            var result = await context.ConnectionRequests.ToListAsync();
+            return result;
+        }
+
+        public async Task<IEnumerable<Employee>> GetConnectionRequestList(int id)
+        {
+            ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(id);
+            if (connectionRequest == null)
+            {
+                return null;
+            }
+            return connectionRequest.Employees;
+        }
+
 
     }
 }
