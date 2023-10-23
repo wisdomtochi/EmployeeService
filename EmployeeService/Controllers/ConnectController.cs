@@ -34,5 +34,12 @@ namespace EmployeeService.Controllers
             var result = await connectionsLogic.AddToConnection(employeeId, connectionId);
             return Ok(result);
         }
+
+        [HttpDelete("{employeeId}, {connectionId}")]
+        public async Task<IActionResult> DeleteConnection(int employeeId, int connectionId)
+        {
+            var result = await connectionsLogic.DeleteFromConnection(employeeId, connectionId);
+            return Ok(result);
+        }
     }
 }
