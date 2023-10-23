@@ -52,6 +52,10 @@ namespace EmployeeService.Services.Implementations
         public async Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
+            if (connectEmployee == null)
+            {
+                return null;
+            }
             var empList = connectEmployee.Employees;
             return empList;
         }
