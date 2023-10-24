@@ -15,9 +15,13 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEmployeeConnectionList(int id)
+        public async Task<IActionResult> GetEmployeeConnectionList(int id)
         {
             var result = await connectionsLogic.GetEmployeeConnectionList(id);
+            if (result == null)
+            {
+                return NotFound(result);
+            }
             return Ok(result);
         }
 

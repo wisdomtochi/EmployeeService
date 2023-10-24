@@ -54,11 +54,14 @@ namespace EmployeeService.Services.Implementations
             //code to check if the requestnotification message is Pending to return the employees with that message
             //rather than removing the employees that their requests have been accepted from the table totally 
 
-            //ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(id);
-            //if (connectionRequest.RequestNotification == "Pending")
-            //{
-            //    return (IEnumerable<Employee>)employee.Requests;
-            //}
+            ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(Id);
+            if (connectionRequest.RequestNotification == "Pending")
+            {
+                return (IEnumerable<Employee>)employee.Requests;
+            }
+
+            //how to make the below line of code return a string rather than
+            //the list of requests in the employees table
             return (IEnumerable<Employee>)employee.Requests;
         }
     }

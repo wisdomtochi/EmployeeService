@@ -34,7 +34,8 @@ namespace EmployeeService.Services.Implementations
 
                     //updating the text in the RequestNotification column
                     connectionRequest.RequestNotification = "Accepted";
-                    context.ConnectionRequests.Remove(connectionRequest);
+
+                    //context.ConnectionRequests.Remove(connectionRequest);
 
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
@@ -51,19 +52,16 @@ namespace EmployeeService.Services.Implementations
                     return "Connection already exists";
                 }
             }
-            return " The employee or Customer could not be found in the database";
+            else
+            {
+                return " The employee or Customer could not be found in the database";
+            }
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
-            //how to check for nullability and return "couldn't find employee" as a string 
-            if (connectEmployee == null)
-            {
-                return null;
-            }
-            var empList = connectEmployee.Employees;
-            return empList;
+            return connectEmployee.Employees;
         }
 
         public async Task<IEnumerable<Connection>> ConnectionList()
@@ -95,19 +93,5 @@ namespace EmployeeService.Services.Implementations
 
             return "The Employee Id or Connection Id could not be found in the database";
         }
-
-        //public IEnumerable<Employee> ConnectionsRequestList()
-        //{
-        //    return connectEmployee.ConnectionRequest;
-        //}
-
-        //public void SendConnectionRequest(Employee emp, ConnectEmployeeViewModel connectEmployee)
-        //{
-        //    if (connectEmployee.Id == emp.Id)
-        //    {
-        //        Employee employee = new();
-        //        connectEmployee.ConnectionRequest.Add(employee);
-        //    }
-        //}
     }
 }
