@@ -46,20 +46,19 @@ namespace EmployeeService.Services.Implementations
             }
         }
 
-        public async Task<IEnumerable<ConnectionRequest>> GetAllConnectionRequest()
-        {
-            var result = await context.ConnectionRequests.ToListAsync();
-            return result;
-        }
-
         public async Task<IEnumerable<Employee>> GetConnectionRequestList(int id)
         {
             Employee employee = await context.Employees.FindAsync(id);
-            //how to check for nullability and return "couldn't find employee" as a string 
-            if (employee == null)
-            {
-                return null;
-            }
+            //1. how to check for nullability and return "couldn't find employee" as a string 
+
+            //2. code to check if the requestnotification message is Pending to return the employees with that message
+            //rather than removing the employees that their requests have been accepted from the table totally 
+
+            //ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(id);
+            //if (connectionRequest.RequestNotification == "Pending")
+            //{
+            //    return (IEnumerable<Employee>)employee.Requests;
+            //}
             return (IEnumerable<Employee>)employee.Requests;
         }
     }

@@ -5,11 +5,11 @@ namespace EmployeeService.Controllers
 {
     [Route("api/connect/[action]")]
     [ApiController]
-    public class ConnectController : ControllerBase
+    public class ConnectionController : ControllerBase
     {
         private readonly IConnectionsLogicLayer connectionsLogic;
 
-        public ConnectController(IConnectionsLogicLayer connectionsLogic)
+        public ConnectionController(IConnectionsLogicLayer connectionsLogic)
         {
             this.connectionsLogic = connectionsLogic;
         }
