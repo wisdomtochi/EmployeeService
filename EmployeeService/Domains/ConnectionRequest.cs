@@ -2,8 +2,8 @@
 {
     public class ConnectionRequest
     {
-        public int Id { get; set; }
-        public List<Employee>? Employees { get; set; } = new();
+        public int ReceiverId { get; set; }
+        public int SenderId { get; set; }
         public string? RequestNotification { get; set; }
     }
 }

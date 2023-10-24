@@ -54,6 +54,7 @@ namespace EmployeeService.Services.Implementations
         public async Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id)
         {
             Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
+            //how to check for nullability and return "couldn't find employee" as a string 
             if (connectEmployee == null)
             {
                 return null;
