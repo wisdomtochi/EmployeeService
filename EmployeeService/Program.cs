@@ -25,6 +25,7 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IConnectionsLogicLayer, ConnectionsLogicLayer>();
+builder.Services.AddScoped<IConnectionRequestLogicLayer, ConnectionRequestLogicLayer>();
 
 var app = builder.Build();
 

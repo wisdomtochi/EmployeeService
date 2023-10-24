@@ -17,7 +17,7 @@ namespace EmployeeService.Controllers
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
         {
-            var list = await connectionRequestLogic.GetConnectionRequestList(id);
+            var list = await connectionRequestLogic.GetConnectionRequestList(Id);
             return Ok(list);
         }
 

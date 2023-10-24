@@ -14,7 +14,7 @@ namespace EmployeeService.Controllers
             this.connectionsLogic = connectionsLogic;
         }
 
-        cc
+        [HttpGet("{id}")]
         public async Task<ActionResult> GetEmployeeConnectionList(int id)
         {
             var result = await connectionsLogic.GetEmployeeConnectionList(id);
