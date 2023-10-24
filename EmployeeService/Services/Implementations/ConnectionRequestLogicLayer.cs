@@ -14,20 +14,20 @@ namespace EmployeeService.Services.Implementations
             this.context = context;
         }
 
-        public async Task SendConnectionRequest(int employeeId, int requestId)
+        public async Task SendConnectionRequest(int receiverId, int senderId)
         {
-            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
-            Employee request = await context.Employees.FirstOrDefaultAsync(x => x.Id == requestId);
+            Employee receiver = await context.Employees.FirstOrDefaultAsync(x => x.Id == receiverId);
+            Employee sender = await context.Employees.FirstOrDefaultAsync(x => x.Id == senderId);
 
-            if (employee != null && request != null)
+            if (receiver != null && sender != null)
             {
-                ConnectionRequest newRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == requestId);
+                ConnectionRequest newRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == receiverId);
                 if (newRequest == null)
                 {
                     newRequest = new ConnectionRequest
                     {
-                        ReceiverId = requestId,
-                        SenderId = employeeId,
+                        ReceiverId = receiverId,
+                        SenderId = senderId,
                         RequestNotification = "Pending"
                     };
 
@@ -38,7 +38,7 @@ namespace EmployeeService.Services.Implementations
                 {
                     newRequest = new ConnectionRequest
                     {
-                        SenderId = employeeId,
+                        SenderId = senderId,
                         RequestNotification = "Pending"
                     };
                     await context.ConnectionRequests.AddAsync(newRequest);

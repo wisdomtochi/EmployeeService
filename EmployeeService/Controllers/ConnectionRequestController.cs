@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/connectionrequest/[action]")]
     [ApiController]
     public class ConnectionRequestController : ControllerBase
     {
@@ -14,17 +14,17 @@ namespace EmployeeService.Controllers
             this.connectionRequestLogic = connectionRequestLogic;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAllEmployeeConnectionRequest(int id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
         {
             var list = await connectionRequestLogic.GetConnectionRequestList(id);
             return Ok(list);
         }
 
-        [HttpGet("{employeeId}, {requestId}")]
-        public async Task<IActionResult> SendConnectionRequest(int employeeId, int requestId)
+        [HttpGet("{receiverId}, {senderId}")]
+        public async Task<IActionResult> SendConnectionRequest(int receiverId, int senderId)
         {
-            await connectionRequestLogic.SendConnectionRequest(employeeId, requestId);
+            await connectionRequestLogic.SendConnectionRequest(receiverId, senderId);
             return Ok();
         }
     }
