@@ -14,12 +14,12 @@ namespace EmployeeService.Services.Implementations
             this.context = context;
         }
 
-        public async Task SendConnectionRequest(int receiverId, int senderId)
+        public async Task SendConnectionRequest(int senderId, int receiverId)
         {
-            Employee receiver = await context.Employees.FirstOrDefaultAsync(x => x.Id == receiverId);
             Employee sender = await context.Employees.FirstOrDefaultAsync(x => x.Id == senderId);
+            Employee receiver = await context.Employees.FirstOrDefaultAsync(x => x.Id == receiverId);
 
-            if (receiver != null && sender != null)
+            if (sender != null && receiver != null)
             {
                 ConnectionRequest newRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == receiverId);
                 if (newRequest == null)
@@ -54,7 +54,7 @@ namespace EmployeeService.Services.Implementations
             //code to check if the requestnotification message is Pending to return the employees with that message
             //rather than removing the employees that their requests have been accepted from the table totally 
 
-            ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(Id);
+            ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(employee.Id);
             if (connectionRequest.RequestNotification == "Pending")
             {
                 return (IEnumerable<Employee>)employee.Requests;
