@@ -1,4 +1,4 @@
-﻿using EmployeeService.Services.Implementations;
+﻿using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
@@ -7,9 +7,9 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class ConnectionRequestController : ControllerBase
     {
-        private readonly ConnectionRequestLogicLayer connectionRequestLogic;
+        private readonly IConnectionRequestLogicLayer connectionRequestLogic;
 
-        public ConnectionRequestController(ConnectionRequestLogicLayer connectionRequestLogic)
+        public ConnectionRequestController(IConnectionRequestLogicLayer connectionRequestLogic)
         {
             this.connectionRequestLogic = connectionRequestLogic;
         }
@@ -18,6 +18,10 @@ namespace EmployeeService.Controllers
         public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
         {
             var list = await connectionRequestLogic.GetConnectionRequestList(Id);
+            if (list == null)
+            {
+                return NotFound();
+            }
             return Ok(list);
         }
 
