@@ -22,6 +22,7 @@ namespace EmployeeService.Services.Implementations
             if (employee != null && connection != null)
             {
                 Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
+                ConnectionRequest connectionRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == employeeId);
 
                 if (existingConnection == null)
                 {
@@ -31,7 +32,9 @@ namespace EmployeeService.Services.Implementations
                         Employees = new List<Employee> { connection }
                     };
 
-                    //if(employee.)
+                    //updating the text in the RequestNotification column
+                    connectionRequest.RequestNotification = "Accepted";
+                    context.ConnectionRequests.Remove(connectionRequest);
 
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();

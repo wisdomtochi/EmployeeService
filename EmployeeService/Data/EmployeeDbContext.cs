@@ -23,8 +23,8 @@ namespace EmployeeService.Data
                .WithMany(e => e.Employees);
 
             modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Requests)
-                .WithMany(e => e.Employees);
+                .HasMany(e => e.Requests);
+            //.WithOne(e => e.ReceiverId);
         }
 
 
