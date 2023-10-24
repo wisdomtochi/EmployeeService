@@ -41,6 +41,7 @@ namespace EmployeeService.Services.Implementations
                         SenderId = employeeId,
                         RequestNotification = "Pending"
                     };
+                    await context.ConnectionRequests.AddAsync(newRequest);
                     await context.SaveChangesAsync();
                 }
             }
