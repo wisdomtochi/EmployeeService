@@ -31,7 +31,7 @@ namespace EmployeeService.Services.Implementations
                         RequestNotification = "Pending"
                     };
 
-                    receiver.Requests.Add(sender.Id);
+                    receiver.Requests.Add(sender);
                     await context.ConnectionRequests.AddAsync(newRequest);
                     await context.SaveChangesAsync();
                 }
@@ -42,14 +42,14 @@ namespace EmployeeService.Services.Implementations
                         SenderId = senderId,
                         RequestNotification = "Pending"
                     };
-                    receiver.Requests.Add(sender.Id);
+                    receiver.Requests.Add(sender);
                     await context.ConnectionRequests.AddAsync(newRequest);
                     await context.SaveChangesAsync();
                 }
             }
         }
 
-        public async Task<IEnumerable<int>> GetConnectionRequestList(int Id)
+        public async Task<IEnumerable<Employee>> GetConnectionRequestList(int Id)
         {
             Employee employee = await context.Employees.FindAsync(Id);
 

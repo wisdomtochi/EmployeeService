@@ -5,7 +5,7 @@ namespace EmployeeService.Data
 {
     public class EmployeeDbContext : DbContext
     {
-        //public EmployeeDbContext() { }
+        public EmployeeDbContext() { }
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options)
             : base(options)
         {

@@ -1,8 +1,10 @@
-﻿namespace EmployeeService.Services.Interfaces
+﻿using EmployeeService.Domains;
+
+namespace EmployeeService.Services.Interfaces
 {
     public interface IConnectionRequestLogicLayer
     {
-        Task<IEnumerable<int>> GetConnectionRequestList(int Id);
+        Task<IEnumerable<Employee>> GetConnectionRequestList(int Id);
         Task SendConnectionRequest(int employeeId, int requestId);
     }
 }

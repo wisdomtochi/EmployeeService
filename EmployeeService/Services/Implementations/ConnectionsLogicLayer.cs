@@ -24,19 +24,6 @@ namespace EmployeeService.Services.Implementations
                 Connection employeeConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
                 ConnectionRequest connectionRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == employeeId);
 
-                Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == connectionId);
-
-                if (existingConnection == null)
-                {
-                    existingConnection = new Connection
-                    {
-                        Id = connectionId
-                    };
-
-                    await context.Connections.AddAsync(existingConnection);
-                    await context.SaveChangesAsync();
-                }
-
                 if (employeeConnection == null)
                 {
                     employeeConnection = new Connection
@@ -51,14 +38,14 @@ namespace EmployeeService.Services.Implementations
 
                     //context.ConnectionRequests.Remove(connectionRequest);
 
-                    employee.Connections.Add(existingConnection);
+                    employee.Connections.Add(connection);
                     await context.Connections.AddAsync(employeeConnection);
                     await context.SaveChangesAsync();
                 }
 
                 if (!employeeConnection.Employees.Contains(connection))
                 {
-                    employee.Connections.Add(existingConnection);
+                    employee.Connections.Add(connection);
                     employeeConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
                     return "Added to Connection";
