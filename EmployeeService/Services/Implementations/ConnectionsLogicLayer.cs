@@ -32,17 +32,20 @@ namespace EmployeeService.Services.Implementations
                         Employees = new List<Employee> { connection }
                     };
 
+
                     //updating the text in the RequestNotification column
                     connectionRequest.RequestNotification = "Accepted";
 
                     //context.ConnectionRequests.Remove(connectionRequest);
 
+                    employee.Connections.Add(connection.Id);
                     await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
                 }
 
                 if (!existingConnection.Employees.Contains(connection))
                 {
+                    employee.Connections.Add(connection.Id);
                     existingConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
                     return "Added to Connection";

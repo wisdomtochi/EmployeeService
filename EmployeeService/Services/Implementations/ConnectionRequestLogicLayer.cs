@@ -31,6 +31,7 @@ namespace EmployeeService.Services.Implementations
                         RequestNotification = "Pending"
                     };
 
+                    receiver.Requests.Add(sender.Id);
                     await context.ConnectionRequests.AddAsync(newRequest);
                     await context.SaveChangesAsync();
                 }
@@ -41,13 +42,14 @@ namespace EmployeeService.Services.Implementations
                         SenderId = senderId,
                         RequestNotification = "Pending"
                     };
+                    receiver.Requests.Add(sender.Id);
                     await context.ConnectionRequests.AddAsync(newRequest);
                     await context.SaveChangesAsync();
                 }
             }
         }
 
-        public async Task<IEnumerable<Employee>> GetConnectionRequestList(int Id)
+        public async Task<IEnumerable<int>> GetConnectionRequestList(int Id)
         {
             Employee employee = await context.Employees.FindAsync(Id);
 
@@ -57,12 +59,12 @@ namespace EmployeeService.Services.Implementations
             ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(employee.Id);
             if (connectionRequest.RequestNotification == "Pending")
             {
-                return (IEnumerable<Employee>)employee.Requests;
+                return employee.Requests;
             }
 
             //how to make the below line of code return a string rather than
             //the list of requests in the employees table
-            return (IEnumerable<Employee>)employee.Requests;
+            return employee.Requests;
         }
     }
 }

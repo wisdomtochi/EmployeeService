@@ -7,7 +7,7 @@
         public string? LastName { get; set; }
         public string? Gender { get; set; }
         public int Salary { get; set; }
-        public List<Connection> Connections { get; set; } = new();
-        public List<ConnectionRequest> Requests { get; set; } = new();
+        public List<int> Connections { get; set; } = new();
+        public List<int> Requests { get; set; } = new();
     }
 }
