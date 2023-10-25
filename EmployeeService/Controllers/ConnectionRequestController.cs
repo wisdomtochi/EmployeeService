@@ -28,7 +28,7 @@ namespace EmployeeService.Controllers
         [HttpGet("{senderId}, {receiverId}")]
         public async Task<IActionResult> SendConnectionRequest(int senderId, int receiverId)
         {
-            await connectionRequestLogic.SendConnectionRequest(receiverId, senderId);
+            await connectionRequestLogic.SendConnectionRequest(senderId, receiverId);
             return Ok();
         }
     }

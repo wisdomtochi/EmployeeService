@@ -33,7 +33,6 @@ namespace EmployeeService.Services.Implementations
 
                     receiver.Requests.Add(sender);
                     await context.ConnectionRequests.AddAsync(newRequest);
-                    await context.SaveChangesAsync();
                 }
                 else
                 {
@@ -44,8 +43,9 @@ namespace EmployeeService.Services.Implementations
                     };
                     receiver.Requests.Add(sender);
                     await context.ConnectionRequests.AddAsync(newRequest);
-                    await context.SaveChangesAsync();
                 }
+
+                await context.SaveChangesAsync();
             }
         }
 
