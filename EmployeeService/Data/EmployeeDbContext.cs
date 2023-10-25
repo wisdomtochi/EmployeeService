@@ -18,15 +18,14 @@ namespace EmployeeService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Employee>()
-               .HasMany(e => e.Connections)
-               .WithMany(e => e.Employees);
-
-            //modelBuilder.Entity<Employee>()
-            //.HasMany(e => e.Requests);
-            //.WithOne(e => e.ReceiverId);
+            modelBuilder.Entity<Connection>()
+                .HasMany(e => e.Employees)
+                .WithMany(e => e.Connections);
         }
 
-
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("CustomerDBConnection");
+        //}
     }
 }
