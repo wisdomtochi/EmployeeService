@@ -34,7 +34,7 @@ namespace EmployeeService.Services.Implementations
                         Id = connectionId
                     };
 
-                    await context.Connections.AddAsync(employeeConnection);
+                    await context.Connections.AddAsync(existingConnection);
                     await context.SaveChangesAsync();
                 }
 
@@ -55,6 +55,7 @@ namespace EmployeeService.Services.Implementations
                     employee.Connections.Add(existingConnection);
                     await context.Connections.AddAsync(employeeConnection);
                     await context.SaveChangesAsync();
+                    return "Added to Connection";
                 }
 
                 if (!employeeConnection.Employees.Contains(connection))
@@ -66,12 +67,12 @@ namespace EmployeeService.Services.Implementations
                 }
                 else
                 {
-                    return "Connection already exists";
+                    return "Done";
                 }
             }
             else
             {
-                return " The employee or Customer could not be found in the database";
+                return "The employee or Customer could not be found in the database";
             }
         }
 
