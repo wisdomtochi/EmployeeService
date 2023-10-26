@@ -75,14 +75,14 @@ namespace EmployeeService.Services.Implementations
 
                 if (connectionRequest != null)
                 {
-                    context.ConnectionRequests.Remove(connectionRequest);
                     employee.Requests.Remove(request);
+                    context.ConnectionRequests.Remove(connectionRequest);
                     await context.SaveChangesAsync();
                     return "Request successfully removed from list.";
                 }
                 else
                 {
-                    return "You can't delete an employee's request when you don't a connection request message";
+                    return "You can't delete an employee's request when you don't have a connection request message";
                 }
             }
             else

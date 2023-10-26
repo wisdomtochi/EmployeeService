@@ -31,5 +31,12 @@ namespace EmployeeService.Controllers
             await connectionRequestLogic.SendConnectionRequest(receiverId, senderId);
             return Ok();
         }
+
+        [HttpDelete("{employeeId}, {requestId}")]
+        public async Task<IActionResult> RemoveConnectionRequest(int employeeId, int requestId)
+        {
+            var result = await connectionRequestLogic.RemoveConnectionRequest(employeeId, requestId);
+            return Ok(result);
+        }
     }
 }

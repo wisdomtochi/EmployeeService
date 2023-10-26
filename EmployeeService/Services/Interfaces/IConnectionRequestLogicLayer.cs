@@ -6,5 +6,6 @@ namespace EmployeeService.Services.Interfaces
     {
         Task<IEnumerable<Employee>> GetConnectionRequestList(int Id);
         Task SendConnectionRequest(int receiverId, int senderId);
+        Task<string> RemoveConnectionRequest(int employeeId, int requestId);
     }
 }
