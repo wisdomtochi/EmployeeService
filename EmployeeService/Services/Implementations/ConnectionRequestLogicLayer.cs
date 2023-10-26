@@ -14,10 +14,10 @@ namespace EmployeeService.Services.Implementations
             this.context = context;
         }
 
-        public async Task SendConnectionRequest(int senderId, int receiverId)
+        public async Task SendConnectionRequest(int receiverId, int senderId)
         {
-            Employee sender = await context.Employees.FirstOrDefaultAsync(x => x.Id == senderId);
             Employee receiver = await context.Employees.FirstOrDefaultAsync(x => x.Id == receiverId);
+            Employee sender = await context.Employees.FirstOrDefaultAsync(x => x.Id == senderId);
 
             if (sender != null && receiver != null)
             {
@@ -53,18 +53,42 @@ namespace EmployeeService.Services.Implementations
         {
             Employee employee = await context.Employees.FindAsync(Id);
 
-            //code to check if the requestnotification message is Pending to return the employees with that message
-            //rather than removing the employees that their requests have been accepted from the table totally 
-
             ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(employee.Id);
             if (connectionRequest.RequestNotification == "Pending")
             {
                 return employee.Requests;
             }
 
-            //how to make the below line of code return a string rather than
-            //the list of requests in the employees table
+            //how to make the below line of code return a string rather than returning
+            //the list of requests in the employee's table
             return employee.Requests;
+        }
+
+        public async Task<string> RemoveConnectionRequest(int employeeId, int requestId)
+        {
+            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
+            Employee request = await context.Employees.FirstOrDefaultAsync(x => x.Id == requestId);
+
+            if (employee != null && request != null)
+            {
+                ConnectionRequest connectionRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == employeeId);
+
+                if (connectionRequest != null)
+                {
+                    context.ConnectionRequests.Remove(connectionRequest);
+                    employee.Requests.Remove(request);
+                    await context.SaveChangesAsync();
+                    return "Request successfully removed from list.";
+                }
+                else
+                {
+                    return "You can't delete an employee's request when you don't a connection request message";
+                }
+            }
+            else
+            {
+                return "Couldn't find Employee or the request Employee in the database.";
+            }
         }
     }
 }

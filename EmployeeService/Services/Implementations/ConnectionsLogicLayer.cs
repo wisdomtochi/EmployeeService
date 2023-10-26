@@ -43,7 +43,7 @@ namespace EmployeeService.Services.Implementations
                     employeeConnection = new Connection
                     {
                         Id = employeeId,
-                        Employees = new List<Employee> { connection }
+                        Employees = new List<Employee>() { connection }
                     };
 
 
@@ -52,6 +52,7 @@ namespace EmployeeService.Services.Implementations
 
                     //context.ConnectionRequests.Remove(connectionRequest);
 
+                    employee.Requests.Remove(connection);
                     employee.Connections.Add(existingConnection);
                     await context.Connections.AddAsync(employeeConnection);
                     await context.SaveChangesAsync();
@@ -60,6 +61,7 @@ namespace EmployeeService.Services.Implementations
 
                 if (!employeeConnection.Employees.Contains(connection))
                 {
+                    employee.Requests.Remove(connection);
                     employee.Connections.Add(existingConnection);
                     employeeConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
