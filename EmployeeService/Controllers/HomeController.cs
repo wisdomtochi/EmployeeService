@@ -44,7 +44,7 @@ namespace EmployeeService.Controllers
             return Ok(emp);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteEmployee(int id)
         {
             var result = employeeRepository.DeleteEmployee(id);
