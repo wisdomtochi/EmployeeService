@@ -1,5 +1,6 @@
 ﻿using EmployeeService.Data_Access.Interfaces;
 using EmployeeService.Domains;
+using EmployeeService.DTO;
 using EmployeeService.Services.Interfaces;
 
 namespace EmployeeService.Services.Implementations
@@ -30,7 +31,7 @@ namespace EmployeeService.Services.Implementations
                     {
                         ReceiverId = receiverId,
                         SenderId = senderId,
-                        RequestNotification = "Pending"
+                        RequestNotification = EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.Pending)
                     };
 
                     receiver.Requests.Add(sender);
@@ -42,7 +43,7 @@ namespace EmployeeService.Services.Implementations
                     {
                         ReceiverId = receiverId,
                         SenderId = senderId,
-                        RequestNotification = "Pending"
+                        RequestNotification = EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.Pending)
                     };
                     receiver.Requests.Add(sender);
                     await connectionRequestGenericRepository.Create(newRequest);
@@ -57,7 +58,7 @@ namespace EmployeeService.Services.Implementations
             Employee employee = await employeeGenericRepository.ReadSingle(Id);
 
             ConnectionRequest connectionRequest = await connectionRequestGenericRepository.ReadSingle(Id);
-            if (connectionRequest.RequestNotification == "Pending")
+            if (connectionRequest.RequestNotification == EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.Pending))
             {
                 return employee.Requests;
             }
@@ -81,16 +82,16 @@ namespace EmployeeService.Services.Implementations
                     employee.Requests.Remove(request);
                     await connectionRequestGenericRepository.Delete(requestId);
                     await connectionRequestGenericRepository.SaveChanges();
-                    return "Request successfully removed from list.";
+                    return EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.RequestRemoved);
                 }
                 else
                 {
-                    return "You can't delete an employee's request when you don't have a connection request message";
+                    return EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.CannotDeleteRequest);
                 }
             }
             else
             {
-                return "Couldn't find Employee or the request Employee in the database.";
+                return EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.CouldNotBeFound);
             }
         }
     }

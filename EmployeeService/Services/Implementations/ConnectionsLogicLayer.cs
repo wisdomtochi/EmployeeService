@@ -52,7 +52,7 @@ namespace EmployeeService.Services.Implementations
 
 
                     //updating the text in the RequestNotification column
-                    connectionRequest.RequestNotification = Enums.GetConfirmationMessage(ConfirmationMessagesEnum.Accepted);
+                    connectionRequest.RequestNotification = EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.Accepted);
 
                     //context.ConnectionRequests.Remove(connectionRequest);
 
@@ -60,12 +60,12 @@ namespace EmployeeService.Services.Implementations
                     employee.Connections.Add(existingConnection);
                     await connectionGenericRepository.Create(employeeConnection);
                     await connectionGenericRepository.SaveChanges();
-                    return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.AddedtoConnection);
+                    return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.AddedtoConnection);
                 }
 
                 if (employeeConnection.Employees.Contains(connection))
                 {
-                    return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.AlreadyInYourConnectionList);
+                    return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.AlreadyInYourConnectionList);
                 }
                 else
                 {
@@ -73,12 +73,12 @@ namespace EmployeeService.Services.Implementations
                     employee.Requests.Remove(connection);
                     employee.Connections.Add(existingConnection);
                     await employeeGenericRepository.SaveChanges();
-                    return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.AddedtoConnection);
+                    return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.AddedtoConnection);
                 }
             }
             else
             {
-                return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.CouldNotBeFound);
+                return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.CouldNotBeFound);
             }
         }
 
@@ -105,17 +105,17 @@ namespace EmployeeService.Services.Implementations
 
                 if (existingConnection == null)
                 {
-                    return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.CannotDelete);
+                    return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.CannotDelete);
                 }
                 else
                 {
                     existingConnection.Employees.Remove(connection);
                     await connectionGenericRepository.SaveChanges();
-                    return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.EmployeeDeleted);
+                    return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.EmployeeDeleted);
                 }
             }
 
-            return Enums.GetConfirmationMessage(ConfirmationMessagesEnum.CouldNotBeFound);
+            return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.CouldNotBeFound);
         }
     }
 }

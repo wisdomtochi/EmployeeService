@@ -1,6 +1,6 @@
 ﻿namespace EmployeeService.DTO
 {
-    public enum ConfirmationMessagesEnum
+    public enum ConnectionMessagesEnum
     {
         Accepted,
         AddedtoConnection,
