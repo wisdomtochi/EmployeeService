@@ -1,49 +1,47 @@
-﻿using EmployeeService.Data;
+﻿using EmployeeService.Data_Access.Interfaces;
 using EmployeeService.Domains;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Data_Access
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private readonly EmployeeDbContext context;
+        private readonly IGenericRepository<Employee> employeeGenericRepository;
 
-        public EmployeeRepository(EmployeeDbContext context)
+        public EmployeeRepository(IGenericRepository<Employee> employeeGenericRepository)
         {
-            this.context = context;
+            this.employeeGenericRepository = employeeGenericRepository;
         }
 
 
         public async Task<IEnumerable<Employee>> GetAllEmployee()
         {
-            var employee = await context.Employees.ToListAsync();
+            var employee = await employeeGenericRepository.ReadAll();
 
             return employee;
         }
 
         public async Task<Employee> GetEmployee(int id)
         {
-            var thisReturn = await context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            var thisReturn = await employeeGenericRepository.ReadSingle(id);
             return thisReturn;
         }
 
         public async Task<Employee> CreateEmployee(Employee employee)
         {
-            await context.Employees.AddAsync(employee);
-            await context.SaveChangesAsync();
+            await employeeGenericRepository.Create(employee);
+            await employeeGenericRepository.SaveChanges();
             return employee;
         }
 
         public async Task DeleteEmployee(int employeeId)
         {
-            var employee = new Employee() { Id = employeeId };
-            context.Employees.Remove(employee);
-            await context.SaveChangesAsync();
+            await employeeGenericRepository.Delete(employeeId);
+            await employeeGenericRepository.SaveChanges();
         }
 
         public async Task UpdateEmployee(Employee employeeModel)
         {
-            var employee = await context.Employees.FindAsync(employeeModel.Id);
+            var employee = await employeeGenericRepository.ReadSingle(employeeModel.Id);
             if (employee != null)
             {
                 employee.Id = employeeModel.Id;
@@ -52,7 +50,8 @@ namespace EmployeeService.Data_Access
                 employee.Gender = employeeModel.Gender;
                 employee.Salary = employeeModel.Salary;
 
-                await context.SaveChangesAsync();
+                employeeGenericRepository.Update(employee);
+                await employeeGenericRepository.SaveChanges();
             }
         }
     }

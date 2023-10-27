@@ -1,30 +1,34 @@
-﻿using EmployeeService.Data;
+﻿using EmployeeService.Data_Access.Interfaces;
 using EmployeeService.Domains;
 using EmployeeService.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Services.Implementations
 {
     public class ConnectionsLogicLayer : IConnectionsLogicLayer
     {
-        private readonly EmployeeDbContext context;
+        private readonly IGenericRepository<Connection> connectionGenericRepository;
+        private readonly IGenericRepository<Employee> employeeGenericRepository;
+        private readonly IGenericRepository<ConnectionRequest> connectionRequestGenericRepository;
 
-        public ConnectionsLogicLayer(EmployeeDbContext context)
+        public ConnectionsLogicLayer(IGenericRepository<Connection> connectionGenericRepository, IGenericRepository<Employee> employeeGenericRepository,
+                            IGenericRepository<ConnectionRequest> connectionRequestGenericRepository)
         {
-            this.context = context;
+            this.connectionGenericRepository = connectionGenericRepository;
+            this.employeeGenericRepository = employeeGenericRepository;
+            this.connectionRequestGenericRepository = connectionRequestGenericRepository;
         }
 
         public async Task<string> AddToConnection(int employeeId, int connectionId)
         {
-            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
-            Employee connection = await context.Employees.FirstOrDefaultAsync(x => x.Id == connectionId);
+            Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
+            Employee connection = await employeeGenericRepository.ReadSingle(connectionId);
 
             if (employee != null && connection != null)
             {
-                Connection employeeConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
-                ConnectionRequest connectionRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == employeeId);
+                Connection employeeConnection = await connectionGenericRepository.ReadSingle(employeeId);
+                ConnectionRequest connectionRequest = await connectionRequestGenericRepository.ReadSingle(employeeId);
 
-                Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == connectionId);
+                Connection existingConnection = await connectionGenericRepository.ReadSingle(connectionId);
 
                 if (existingConnection == null)
                 {
@@ -33,8 +37,8 @@ namespace EmployeeService.Services.Implementations
                         Id = connectionId
                     };
 
-                    await context.Connections.AddAsync(existingConnection);
-                    await context.SaveChangesAsync();
+                    await connectionGenericRepository.Create(existingConnection);
+                    await connectionGenericRepository.SaveChanges();
                 }
 
                 if (employeeConnection == null)
@@ -53,8 +57,8 @@ namespace EmployeeService.Services.Implementations
 
                     employee.Requests.Remove(connection);
                     employee.Connections.Add(existingConnection);
-                    await context.Connections.AddAsync(employeeConnection);
-                    await context.SaveChangesAsync();
+                    await connectionGenericRepository.Create(employeeConnection);
+                    await connectionGenericRepository.SaveChanges();
                     return "Added to Connection";
                 }
 
@@ -67,7 +71,7 @@ namespace EmployeeService.Services.Implementations
                     employeeConnection.Employees.Add(connection);
                     employee.Requests.Remove(connection);
                     employee.Connections.Add(existingConnection);
-                    await context.SaveChangesAsync();
+                    await employeeGenericRepository.SaveChanges();
                     return "Added to Connection";
                 }
             }
@@ -79,24 +83,24 @@ namespace EmployeeService.Services.Implementations
 
         public async Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id)
         {
-            Connection connectEmployee = await context.Connections.FirstOrDefaultAsync(x => x.Id == Id);
+            Connection connectEmployee = await connectionGenericRepository.ReadSingle(Id);
             return connectEmployee.Employees;
         }
 
         public async Task<IEnumerable<Connection>> ConnectionList()
         {
-            var empList = await context.Connections.ToListAsync();
+            var empList = await connectionGenericRepository.ReadAll();
             return empList;
         }
 
         public async Task<string> DeleteFromConnection(int employeeId, int connectionId)
         {
-            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
-            Employee connection = await context.Employees.FirstOrDefaultAsync(x => x.Id == connectionId);
+            Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
+            Employee connection = await employeeGenericRepository.ReadSingle(connectionId);
 
             if (employee != null && connection != null)
             {
-                Connection existingConnection = await context.Connections.FirstOrDefaultAsync(x => x.Id == employeeId);
+                Connection existingConnection = await connectionGenericRepository.ReadSingle(employeeId);
 
                 if (existingConnection == null)
                 {
@@ -105,7 +109,7 @@ namespace EmployeeService.Services.Implementations
                 else
                 {
                     existingConnection.Employees.Remove(connection);
-                    await context.SaveChangesAsync();
+                    await connectionGenericRepository.SaveChanges();
                     return "Employee successfully deleted from your connections";
                 }
             }

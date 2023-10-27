@@ -1,27 +1,29 @@
-﻿using EmployeeService.Data;
+﻿using EmployeeService.Data_Access.Interfaces;
 using EmployeeService.Domains;
 using EmployeeService.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeService.Services.Implementations
 {
     public class ConnectionRequestLogicLayer : IConnectionRequestLogicLayer
     {
-        private readonly EmployeeDbContext context;
+        private readonly IGenericRepository<ConnectionRequest> connectionRequestGenericRepository;
+        private readonly IGenericRepository<Employee> employeeGenericRepository;
 
-        public ConnectionRequestLogicLayer(EmployeeDbContext context)
+        public ConnectionRequestLogicLayer(IGenericRepository<ConnectionRequest> connectionRequestGenericRepository,
+                        IGenericRepository<Employee> employeeGenericRepository)
         {
-            this.context = context;
+            this.connectionRequestGenericRepository = connectionRequestGenericRepository;
+            this.employeeGenericRepository = employeeGenericRepository;
         }
 
         public async Task SendConnectionRequest(int receiverId, int senderId)
         {
-            Employee receiver = await context.Employees.FirstOrDefaultAsync(x => x.Id == receiverId);
-            Employee sender = await context.Employees.FirstOrDefaultAsync(x => x.Id == senderId);
+            Employee receiver = await employeeGenericRepository.ReadSingle(receiverId);
+            Employee sender = await employeeGenericRepository.ReadSingle(senderId);
 
             if (sender != null && receiver != null)
             {
-                ConnectionRequest newRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == receiverId);
+                ConnectionRequest newRequest = await connectionRequestGenericRepository.ReadSingle(receiverId);
                 if (newRequest == null)
                 {
                     newRequest = new ConnectionRequest
@@ -32,7 +34,7 @@ namespace EmployeeService.Services.Implementations
                     };
 
                     receiver.Requests.Add(sender);
-                    await context.ConnectionRequests.AddAsync(newRequest);
+                    await connectionRequestGenericRepository.Create(newRequest);
                 }
                 else
                 {
@@ -43,18 +45,18 @@ namespace EmployeeService.Services.Implementations
                         RequestNotification = "Pending"
                     };
                     receiver.Requests.Add(sender);
-                    await context.ConnectionRequests.AddAsync(newRequest);
+                    await connectionRequestGenericRepository.Create(newRequest);
                 }
 
-                await context.SaveChangesAsync();
+                await connectionRequestGenericRepository.SaveChanges();
             }
         }
 
         public async Task<IEnumerable<Employee>> GetConnectionRequestList(int Id)
         {
-            Employee employee = await context.Employees.FindAsync(Id);
+            Employee employee = await employeeGenericRepository.ReadSingle(Id);
 
-            ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(employee.Id);
+            ConnectionRequest connectionRequest = await connectionRequestGenericRepository.ReadSingle(Id);
             if (connectionRequest.RequestNotification == "Pending")
             {
                 return employee.Requests;
@@ -67,18 +69,18 @@ namespace EmployeeService.Services.Implementations
 
         public async Task<string> RemoveConnectionRequest(int employeeId, int requestId)
         {
-            Employee employee = await context.Employees.FirstOrDefaultAsync(x => x.Id == employeeId);
-            Employee request = await context.Employees.FirstOrDefaultAsync(x => x.Id == requestId);
+            Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
+            Employee request = await employeeGenericRepository.ReadSingle(requestId);
 
             if (employee != null && request != null)
             {
-                ConnectionRequest connectionRequest = await context.ConnectionRequests.FirstOrDefaultAsync(x => x.ReceiverId == employeeId);
+                ConnectionRequest connectionRequest = await connectionRequestGenericRepository.ReadSingle(requestId);
 
                 if (connectionRequest != null)
                 {
                     employee.Requests.Remove(request);
-                    context.ConnectionRequests.Remove(connectionRequest);
-                    await context.SaveChangesAsync();
+                    await connectionRequestGenericRepository.Delete(requestId);
+                    await connectionRequestGenericRepository.SaveChanges();
                     return "Request successfully removed from list.";
                 }
                 else
