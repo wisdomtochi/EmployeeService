@@ -45,17 +45,17 @@ namespace EmployeeService.Services.Implementations
                     return "Added to Connection";
                 }
 
-                if (!employeeConnection.Employees.Contains(connection))
+                if (employeeConnection.Employees.Contains(connection))
+                {
+                    return "Already in your connection list";
+                }
+                else
                 {
                     employee.Requests.Remove(connection);
                     employee.Connections.Add(connection);
                     employeeConnection.Employees.Add(connection);
                     await context.SaveChangesAsync();
                     return "Added to Connection";
-                }
-                else
-                {
-                    return "Done";
                 }
             }
             else

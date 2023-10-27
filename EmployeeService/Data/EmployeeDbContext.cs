@@ -22,10 +22,5 @@ namespace EmployeeService.Data
             //    .HasMany(e => e.Employees)
             //    .WithMany(e => e.Connections);
         }
-
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer("CustomerDBConnection");
-        //}
     }
 }

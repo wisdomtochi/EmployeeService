@@ -38,6 +38,7 @@ namespace EmployeeService.Services.Implementations
                 {
                     newRequest = new ConnectionRequest
                     {
+                        ReceiverId = receiverId,
                         SenderId = senderId,
                         RequestNotification = "Pending"
                     };
@@ -54,7 +55,7 @@ namespace EmployeeService.Services.Implementations
             Employee employee = await context.Employees.FindAsync(Id);
 
             ConnectionRequest connectionRequest = await context.ConnectionRequests.FindAsync(employee.Id);
-            if (connectionRequest.RequestNotification == "Accepted")
+            if (connectionRequest.RequestNotification == "Pending")
             {
                 return employee.Requests;
             }
