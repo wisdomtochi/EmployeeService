@@ -18,9 +18,9 @@ namespace EmployeeService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<Connection>()
-            //    .HasMany(e => e.Employees)
-            //    .WithMany(e => e.Connections);
+            modelBuilder.Entity<Connection>()
+                .HasMany(e => e.Employees)
+                .WithMany(e => e.Connections);
         }
     }
 }

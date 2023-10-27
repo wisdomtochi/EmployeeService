@@ -10,7 +10,7 @@ namespace EmployeeService.Domains
         public string? LastName { get; set; }
         public string? Gender { get; set; }
         public int Salary { get; set; }
-        public List<Employee> Connections { get; set; }
-        public List<Employee> Requests { get; set; }
+        public List<Connection> Connections { get; set; } = new();
+        public List<Employee> Requests { get; set; } = new();
     }
 }
