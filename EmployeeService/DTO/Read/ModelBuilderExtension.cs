@@ -1,7 +1,7 @@
 ﻿using EmployeeService.Domains;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeService.DTO
+namespace EmployeeService.DTO.Read
 {
     public static class ModelBuilderExtension
     {
@@ -13,7 +13,7 @@ namespace EmployeeService.DTO
                     Id = 3,
                     FirstName = "Misyn",
                     LastName = "Kisera",
-                    Gender = "F",
+                    Gender = GenderEnum.Female,
                     Salary = 847300
                 },
                 new Employee
@@ -21,7 +21,7 @@ namespace EmployeeService.DTO
                     Id = 4,
                     FirstName = "Jurome",
                     LastName = "Anthony",
-                    Gender = "M",
+                    Gender = GenderEnum.Male,
                     Salary = 324300
                 },
                 new Employee
@@ -29,7 +29,7 @@ namespace EmployeeService.DTO
                     Id = 5,
                     FirstName = "Doseel",
                     LastName = "Paul",
-                    Gender = "F",
+                    Gender = GenderEnum.Male,
                     Salary = 332300
                 }
                 );

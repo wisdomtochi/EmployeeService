@@ -1,6 +1,6 @@
 ﻿using EmployeeService.Data_Access.Interfaces;
 using EmployeeService.Domains;
-using EmployeeService.DTO;
+using EmployeeService.DTO.Read;
 using EmployeeService.Services.Interfaces;
 
 namespace EmployeeService.Services.Implementations

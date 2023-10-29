@@ -1,4 +1,4 @@
-﻿using EmployeeService.DTO;
+﻿using EmployeeService.DTO.Read;
 using System.ComponentModel.DataAnnotations;
 
 namespace EmployeeService.Domains
