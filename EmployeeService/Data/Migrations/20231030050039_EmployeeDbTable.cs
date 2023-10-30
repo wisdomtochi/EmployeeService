@@ -4,7 +4,7 @@
 
 namespace EmployeeService.Migrations
 {
-    public partial class NewMigration : Migration
+    public partial class EmployeeDbTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
