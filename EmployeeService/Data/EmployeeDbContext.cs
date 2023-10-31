@@ -5,7 +5,7 @@ namespace EmployeeService.Data
 {
     public class EmployeeDbContext : DbContext
     {
-        public EmployeeDbContext() { }
+        //public EmployeeDbContext() { }
         public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options)
             : base(options)
         {
@@ -23,9 +23,6 @@ namespace EmployeeService.Data
                 .WithMany(e => e.Connections);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("CustomerDBConnection");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => base.OnConfiguring(optionsBuilder);
     }
 }
