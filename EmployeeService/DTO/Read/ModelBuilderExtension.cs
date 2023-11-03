@@ -13,7 +13,7 @@ namespace EmployeeService.DTO.Read
                     Id = 3,
                     FirstName = "Misyn",
                     LastName = "Kisera",
-                    Gender = GenderEnum.Female,
+                    Gender = "F",
                     Salary = 847300
                 },
                 new Employee
@@ -21,7 +21,7 @@ namespace EmployeeService.DTO.Read
                     Id = 4,
                     FirstName = "Jurome",
                     LastName = "Anthony",
-                    Gender = GenderEnum.Male,
+                    Gender = "M",
                     Salary = 324300
                 },
                 new Employee
@@ -29,7 +29,7 @@ namespace EmployeeService.DTO.Read
                     Id = 5,
                     FirstName = "Doseel",
                     LastName = "Paul",
-                    Gender = GenderEnum.Male,
+                    Gender = "M",
                     Salary = 332300
                 }
                 );

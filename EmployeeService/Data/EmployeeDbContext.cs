@@ -5,12 +5,8 @@ namespace EmployeeService.Data
 {
     public class EmployeeDbContext : DbContext
     {
-        public EmployeeDbContext() { }
-        public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options)
-            : base(options)
-        {
-
-        }
+        public EmployeeDbContext(DbContextOptions<EmployeeDbContext> options) : base(options)
+        { }
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Connection> Connections { get; set; }
@@ -21,12 +17,18 @@ namespace EmployeeService.Data
             modelBuilder.Entity<Connection>()
                 .HasMany(e => e.Employees)
                 .WithMany(e => e.Connections);
+
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("CustomerDBConnection",
-                new MySqlServerVersion(new Version(8, 0, 34)));
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseMySql("CustomerDBConnection",
+                    new MySqlServerVersion(new Version(8, 0, 34)));
+            }
         }
+
     }
 }
