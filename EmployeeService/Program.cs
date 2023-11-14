@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 string dbcon = builder.Configuration.GetConnectionString("CustomerDBConnection");
-builder.Services.AddDbContextPool<EmployeeDbContext>(options =>
+builder.Services.AddDbContext<EmployeeDbContext>(options =>
 {
     options.UseMySql(dbcon, ServerVersion.AutoDetect(dbcon), sqlopt =>
     {
