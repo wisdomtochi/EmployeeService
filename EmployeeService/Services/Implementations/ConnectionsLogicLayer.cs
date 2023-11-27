@@ -29,16 +29,16 @@ namespace EmployeeService.Services.Implementations
                 Connection employeeConnection = await connectionGenericRepository.ReadSingle(employeeId);
                 ConnectionRequest connectionRequest = await connectionRequestGenericRepository.ReadSingle(employeeId);
 
-                Connection existingConnection = await connectionGenericRepository.ReadSingle(connectionId);
+                Connection newConnection = await connectionGenericRepository.ReadSingle(connectionId);
 
-                if (existingConnection == null)
+                if (newConnection == null)
                 {
-                    existingConnection = new Connection
+                    newConnection = new Connection
                     {
                         Id = connectionId
                     };
 
-                    await connectionGenericRepository.Create(existingConnection);
+                    await connectionGenericRepository.Create(newConnection);
                     await connectionGenericRepository.SaveChanges();
                 }
 
@@ -57,7 +57,7 @@ namespace EmployeeService.Services.Implementations
                     //context.ConnectionRequests.Remove(connectionRequest);
 
                     employee.Requests.Remove(connection);
-                    employee.Connections.Add(existingConnection);
+                    employee.Connections.Add(newConnection);
                     await connectionGenericRepository.Create(employeeConnection);
                     await connectionGenericRepository.SaveChanges();
                     return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.AddedtoConnection);
@@ -69,9 +69,9 @@ namespace EmployeeService.Services.Implementations
                 }
                 else
                 {
-                    employeeConnection.Employees.Add(connection);
                     employee.Requests.Remove(connection);
-                    employee.Connections.Add(existingConnection);
+                    employee.Connections.Add(newConnection);
+                    employeeConnection.Employees.Add(connection);
                     await employeeGenericRepository.SaveChanges();
                     return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.AddedtoConnection);
                 }
@@ -101,15 +101,17 @@ namespace EmployeeService.Services.Implementations
 
             if (employee != null && connection != null)
             {
-                Connection existingConnection = await connectionGenericRepository.ReadSingle(employeeId);
+                Connection employeeConnection = await connectionGenericRepository.ReadSingle(employeeId);
+                Connection otherPersonConnectionObject = await connectionGenericRepository.ReadSingle(connectionId);
 
-                if (existingConnection == null)
+                if (employeeConnection == null)
                 {
                     return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.CannotDelete);
                 }
                 else
                 {
-                    existingConnection.Employees.Remove(connection);
+                    employee.Connections.Remove(otherPersonConnectionObject);
+                    employeeConnection.Employees.Remove(connection);
                     await connectionGenericRepository.SaveChanges();
                     return EnumsImplementation.ConfirmationMessage(ConnectionMessagesEnum.EmployeeDeleted);
                 }

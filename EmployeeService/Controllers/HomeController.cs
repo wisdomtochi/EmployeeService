@@ -17,7 +17,7 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployee(int id)
+        public async Task<IActionResult> GetEmployee([FromHeader] int id)
         {
             var emp = await employeeRepository.GetEmployee(id);
             return Ok(emp);

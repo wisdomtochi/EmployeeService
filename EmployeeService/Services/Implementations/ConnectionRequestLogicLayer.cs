@@ -22,7 +22,7 @@ namespace EmployeeService.Services.Implementations
             Employee receiver = await employeeGenericRepository.ReadSingle(receiverId);
             Employee sender = await employeeGenericRepository.ReadSingle(senderId);
 
-            if (sender != null && receiver != null)
+            if (receiver != null && sender != null)
             {
                 ConnectionRequest newRequest = await connectionRequestGenericRepository.ReadSingle(receiverId);
                 if (newRequest == null)
@@ -65,7 +65,11 @@ namespace EmployeeService.Services.Implementations
 
             //how to make the below line of code return a string rather than returning
             //the list of requests in the employee's table
+
             return employee.Requests;
+
+            //string response = EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.CannotDeleteRequest);
+            //return response;
         }
 
         public async Task<string> RemoveConnectionRequest(int employeeId, int requestId)

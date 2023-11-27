@@ -8,7 +8,5 @@ namespace EmployeeService.Services.Interfaces
         Task<IEnumerable<Connection>> ConnectionList();
         Task<IEnumerable<Employee>> GetEmployeeConnectionList(int Id);
         Task<string> DeleteFromConnection(int employeeId, int connectionId);
-        //IEnumerable<Employee> ConnectionsRequestList();
-        //void SendConnectionRequest(Employee emp, ConnectEmployeeViewModel connectEmployee);
     }
 }
