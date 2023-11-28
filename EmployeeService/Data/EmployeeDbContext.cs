@@ -18,8 +18,6 @@ namespace EmployeeService.Data
             modelBuilder.Entity<Connection>()
                 .HasMany(e => e.Employees)
                 .WithMany(e => e.Connections);
-
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
