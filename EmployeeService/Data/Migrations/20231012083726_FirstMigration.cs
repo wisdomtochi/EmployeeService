@@ -13,10 +13,10 @@ namespace EmployeeService.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                        .Annotation("MySql:Identity", "1, 1"),
+                    FirstName = table.Column<string>(type: "varchar(30)", nullable: false),
+                    LastName = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Gender = table.Column<int>(type: "int", nullable: false),
                     Salary = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

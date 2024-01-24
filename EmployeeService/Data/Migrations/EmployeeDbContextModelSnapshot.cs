@@ -31,7 +31,7 @@ namespace EmployeeService.Migrations
 
                     b.HasIndex("EmployeesId");
 
-                    b.ToTable("ConnectionEmployee", (string)null);
+                    b.ToTable("ConnectionEmployee");
                 });
 
             modelBuilder.Entity("EmployeeService.Domains.Connection", b =>
@@ -42,7 +42,7 @@ namespace EmployeeService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Connections", (string)null);
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("EmployeeService.Domains.ConnectionRequest", b =>
@@ -59,7 +59,7 @@ namespace EmployeeService.Migrations
 
                     b.HasKey("ReceiverId");
 
-                    b.ToTable("ConnectionRequests", (string)null);
+                    b.ToTable("ConnectionRequests");
                 });
 
             modelBuilder.Entity("EmployeeService.Domains.Employee", b =>
@@ -72,12 +72,14 @@ namespace EmployeeService.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("longtext");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int>("Salary")
@@ -87,7 +89,7 @@ namespace EmployeeService.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("ConnectionEmployee", b =>
