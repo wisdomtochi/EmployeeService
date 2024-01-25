@@ -16,14 +16,13 @@ namespace EmployeeService.Data_Access
         public async Task<IEnumerable<Employee>> GetAllEmployee()
         {
             var employee = await employeeGenericRepository.ReadAll();
-
             return employee;
         }
 
         public async Task<Employee> GetEmployee(int id)
         {
-            var thisReturn = await employeeGenericRepository.ReadSingle(id);
-            return thisReturn;
+            var employee = await employeeGenericRepository.ReadSingle(id);
+            return employee;
         }
 
         public async Task<Employee> CreateEmployee(Employee employee)
