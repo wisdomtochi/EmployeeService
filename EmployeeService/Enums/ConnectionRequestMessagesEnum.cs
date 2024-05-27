@@ -1,4 +1,4 @@
-﻿namespace EmployeeService.DTO.Read
+﻿namespace EmployeeService.Enums
 {
     public enum ConnectionRequestMessagesEnum
     {

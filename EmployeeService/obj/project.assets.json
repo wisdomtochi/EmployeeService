@@ -2514,11 +2514,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\EmployeeService\\EmployeeService\\EmployeeService.csproj",
+      "projectUniqueName": "C:\\Code Involved Projects\\EmployeeService\\EmployeeService\\EmployeeService.csproj",
       "projectName": "EmployeeService",
-      "projectPath": "C:\\Projects\\EmployeeService\\EmployeeService\\EmployeeService.csproj",
+      "projectPath": "C:\\Code Involved Projects\\EmployeeService\\EmployeeService\\EmployeeService.csproj",
       "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\EmployeeService\\EmployeeService\\obj\\",
+      "outputPath": "C:\\Code Involved Projects\\EmployeeService\\EmployeeService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config",

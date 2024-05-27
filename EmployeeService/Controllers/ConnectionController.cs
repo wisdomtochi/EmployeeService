@@ -7,9 +7,9 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class ConnectionController : ControllerBase
     {
-        private readonly IConnectionsLogicLayer connectionsLogic;
+        private readonly IConnectionService connectionsLogic;
 
-        public ConnectionController(IConnectionsLogicLayer connectionsLogic)
+        public ConnectionController(IConnectionService connectionsLogic)
         {
             this.connectionsLogic = connectionsLogic;
         }

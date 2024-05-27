@@ -7,9 +7,9 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class ConnectionRequestController : ControllerBase
     {
-        private readonly IConnectionRequestLogicLayer connectionRequestLogic;
+        private readonly IConnectionRequestService connectionRequestLogic;
 
-        public ConnectionRequestController(IConnectionRequestLogicLayer connectionRequestLogic)
+        public ConnectionRequestController(IConnectionRequestService connectionRequestLogic)
         {
             this.connectionRequestLogic = connectionRequestLogic;
         }

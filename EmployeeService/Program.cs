@@ -1,7 +1,6 @@
 using EmployeeService.Data;
-using EmployeeService.Data_Access;
-using EmployeeService.Data_Access.Implementation;
-using EmployeeService.Data_Access.Interfaces;
+using EmployeeService.DataAccess.Implementation;
+using EmployeeService.DataAccess.Interfaces;
 using EmployeeService.Services.Implementations;
 using EmployeeService.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +25,9 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 });
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IConnectionsLogicLayer, ConnectionsLogicLayer>();
-builder.Services.AddScoped<IConnectionRequestLogicLayer, ConnectionRequestLogicLayer>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IConnectionService, ConnectionService>();
+builder.Services.AddScoped<IConnectionRequestService, ConnectionRequestService>();
 
 var app = builder.Build();
 

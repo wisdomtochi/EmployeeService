@@ -1,5 +1,4 @@
-﻿using EmployeeService.Data_Access;
-using EmployeeService.Domains;
+﻿using EmployeeService.Domains;
 using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +8,9 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeeRepository employeeRepository;
+        private readonly IEmployeeService employeeRepository;
 
-        public EmployeesController(IEmployeeRepository employeeRepository, IConnectionsLogicLayer connectionsLogic)
+        public EmployeesController(IEmployeeService employeeRepository, IConnectionService connectionsLogic)
         {
             this.employeeRepository = employeeRepository;
         }
@@ -38,9 +37,9 @@ namespace EmployeeService.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateEmployee([FromBody] Employee employee)
+        public IActionResult UpdateEmployee([FromRoute] Guid Id, [FromBody] Employee employee)
         {
-            var emp = employeeRepository.UpdateEmployee(employee);
+            var emp = employeeRepository.UpdateEmployee(Id, employee);
             return Ok(emp);
         }
 

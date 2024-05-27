@@ -1,8 +1,8 @@
 ﻿using EmployeeService.Data;
-using EmployeeService.Data_Access.Interfaces;
+using EmployeeService.DataAccess.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeService.Data_Access.Implementation
+namespace EmployeeService.DataAccess.Implementation
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -15,7 +15,7 @@ namespace EmployeeService.Data_Access.Implementation
             _dbSet = _dbContext.Set<T>();
         }
 
-        public async Task<T> ReadSingle(int id)
+        public async Task<T> ReadSingle(Guid id)
         {
             return await _dbSet.FindAsync(id);
         }
@@ -37,7 +37,7 @@ namespace EmployeeService.Data_Access.Implementation
             updateEntity.State = EntityState.Modified;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
             _dbSet.Remove(entity);

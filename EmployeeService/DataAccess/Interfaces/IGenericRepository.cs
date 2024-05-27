@@ -1,11 +1,11 @@
-﻿namespace EmployeeService.Data_Access.Interfaces
+﻿namespace EmployeeService.DataAccess.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T> ReadSingle(int id);
+        Task<T> ReadSingle(Guid id);
         Task<IEnumerable<T>> ReadAll();
         Task<T> Create(T entity);
-        Task Delete(int id);
+        Task Delete(Guid id);
         void Update(T entity);
         Task<bool> SaveChanges();
     }
