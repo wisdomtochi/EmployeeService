@@ -1,4 +1,6 @@
-﻿using EmployeeService.Domains;
+﻿using EmployeeService.DTO.Read;
+using EmployeeService.DTO.Write;
+using EmployeeService.Helpers;
 using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,46 +10,68 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeeService employeeRepository;
+        private readonly IEmployeeServiceLogic employeeService;
 
-        public EmployeesController(IEmployeeService employeeRepository, IConnectionService connectionsLogic)
+        public EmployeesController(IEmployeeServiceLogic employeeService)
         {
-            this.employeeRepository = employeeRepository;
+            this.employeeService = employeeService;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployee([FromHeader] int id)
+        public async Task<IActionResult> GetEmployee([FromHeader] Guid id)
         {
-            var emp = await employeeRepository.GetEmployee(id);
-            return Ok(emp);
+            var result = await employeeService.GetEmployee(id);
+            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            {
+                Status = true,
+                Results = new List<EmployeeDTO> { result.Data }
+            });
+
+            return BadRequest(result.Message);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetEmployees()
         {
-            var emp = await employeeRepository.GetAllEmployee();
-            return Ok(emp);
+            var result = await employeeService.GetAllEmployee();
+            if (result.Succeeded) return Ok(result.Message);
+
+
+            return BadRequest(result.Message);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateEmployee([FromBody] Employee employee)
+        public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDTOw employee)
         {
-            var result = await employeeRepository.CreateEmployee(employee);
-            return Ok(result);
+            try
+            {
+                var result = await employeeService.CreateEmployee(employee);
+                if (result.Succeeded) return Ok(result.Message);
+                //return Ok(result.);
+                return BadRequest(result.Message);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateEmployee([FromRoute] Guid Id, [FromBody] Employee employee)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] Guid Id, [FromBody] EmployeeDTOw employee)
         {
-            var emp = employeeRepository.UpdateEmployee(Id, employee);
-            return Ok(emp);
+            var result = await employeeService.UpdateEmployee(Id, employee);
+            if (result.Succeeded) return Ok(result.Message);
+
+            return BadRequest(result.Message);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEmployee(int id)
+        public async Task<IActionResult> DeleteEmployee(Guid id)
         {
-            var result = employeeRepository.DeleteEmployee(id);
-            return Ok(result);
+            var result = await employeeService.DeleteEmployee(id);
+            if (result.Succeeded) return Ok(result.Message);
+
+            return BadRequest(result.Message);
         }
     }
 }

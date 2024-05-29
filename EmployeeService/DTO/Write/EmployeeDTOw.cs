@@ -1,15 +1,13 @@
 ﻿using EmployeeService.Enums;
-using System.ComponentModel.DataAnnotations;
 
-namespace EmployeeService.Domains
+namespace EmployeeService.DTO.Write
 {
-    public class Employee
+    public class EmployeeDTOw
     {
-        [Key]
-        public Guid Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Gender Gender { get; set; }
+        public string Email { get; set; }
         public int Salary { get; set; }
     }
 }

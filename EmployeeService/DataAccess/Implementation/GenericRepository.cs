@@ -42,10 +42,5 @@ namespace EmployeeService.DataAccess.Implementation
             var entity = await _dbSet.FindAsync(id);
             _dbSet.Remove(entity);
         }
-
-        public async Task<bool> SaveChanges()
-        {
-            return await _dbContext.SaveChangesAsync() >= 0;
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EmployeeService.DataAccess.Interfaces;
 using EmployeeService.Domains;
+using EmployeeService.Enums;
 using EmployeeService.Helpers;
 using EmployeeService.Services.Interfaces;
 
@@ -7,16 +8,17 @@ namespace EmployeeService.Services.Implementations
 {
     public class ConnectionService : IConnectionService
     {
-        private readonly IGenericRepository<Connection> connectionGenericRepository;
-        private readonly IGenericRepository<Employee> employeeGenericRepository;
-        private readonly IGenericRepository<ConnectionRequest> connectionRequestGenericRepository;
+        private readonly IUnitofWork<Connection> connectionUoW;
+        private readonly IUnitofWork<Employee> employeeUoW;
+        private readonly IUnitofWork<ConnectionRequest> connectionRequestUoW;
 
-        public ConnectionService(IGenericRepository<Connection> connectionGenericRepository, IGenericRepository<Employee> employeeGenericRepository,
-                            IGenericRepository<ConnectionRequest> connectionRequestGenericRepository)
+        public ConnectionService(IUnitofWork<Connection> connectionUoW,
+                                 IUnitofWork<Employee> employeeUoW,
+                                 IUnitofWork<ConnectionRequest> connectionRequestUoW)
         {
-            this.connectionGenericRepository = connectionGenericRepository;
-            this.employeeGenericRepository = employeeGenericRepository;
-            this.connectionRequestGenericRepository = connectionRequestGenericRepository;
+            this.connectionUoW = connectionUoW;
+            this.employeeUoW = employeeUoW;
+            this.connectionRequestUoW = connectionRequestUoW;
         }
 
         #region ADD TO CONNECTIONS
@@ -30,17 +32,16 @@ namespace EmployeeService.Services.Implementations
         {
             try
             {
-                Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
-                Employee friend = await employeeGenericRepository.ReadSingle(friendId);
+                Employee employee = await employeeUoW.Repository.ReadSingle(employeeId);
+                Employee friend = await employeeUoW.Repository.ReadSingle(friendId);
 
                 if (employee == null) return Result.Failure("Unable to find Employee.");
 
                 if (friend == null) return Result.Failure("Unable to find Friend-To-Be.");
 
-                var allConnectionRequest = await connectionRequestGenericRepository.ReadAll();
-                var checkIfConnectionRequestExist = allConnectionRequest.Where(x => x.ReceiverId == employeeId && x.SenderId == friendId && x.RequestNotification == "Pending");
+                var allConnectionRequest = await connectionRequestUoW.Repository.ReadAll();
 
-                if (!checkIfConnectionRequestExist.Any()) return Result.Failure("Connection Not Found.");
+                if (!allConnectionRequest.Any(x => x.ReceiverId == employeeId && x.SenderId == friendId && x.RequestNotification == "Pending")) return Result.Failure("Connection Not Found.");
 
                 Connection addFriendToEmployeeFriendList = new()
                 {
@@ -48,9 +49,12 @@ namespace EmployeeService.Services.Implementations
                     FriendId = friendId
                 };
 
-                await connectionGenericRepository.Create(addFriendToEmployeeFriendList);
-                await connectionGenericRepository.SaveChanges();
-                //_ = checkIfConnectionRequestExist.FirstOrDefault().RequestNotification == "Added";
+                ConnectionRequest request = await connectionRequestUoW.Repository.ReadSingle(employeeId);
+                request.RequestNotification = EnumsImplementation.ConfirmationMessage(ConnectionRequestMessagesEnum.RequestAccepted);
+
+                connectionRequestUoW.Repository.Update(request);
+                await connectionUoW.Repository.Create(addFriendToEmployeeFriendList);
+                await connectionUoW.SaveChangesAsync();
                 return Result.Success("Friend Added Successfully.");
             }
             catch { throw; }
@@ -58,39 +62,42 @@ namespace EmployeeService.Services.Implementations
         }
         #endregion
 
+        #region REMOVE FROM CONNECTION
         public async Task<Result> RemoveFromConnection(Guid employeeId, Guid friendId)
         {
             try
             {
-                Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
-                Employee friend = await employeeGenericRepository.ReadSingle(friendId);
+                Employee employee = await employeeUoW.Repository.ReadSingle(employeeId);
+                Employee friend = await employeeUoW.Repository.ReadSingle(friendId);
 
                 if (employee == null) return Result.Failure("Unable to find Employee.");
 
                 if (friend == null) return Result.Failure("Unable to find Friend-To-Be.");
 
-                var allConnections = await connectionGenericRepository.ReadAll();
+                var allConnections = await connectionUoW.Repository.ReadAll();
 
                 var employeeConnection = allConnections.Where(x => x.EmployeeId == employeeId && x.FriendId == friendId);
 
                 if (!employeeConnection.Any()) return Result.Failure("You do not have him as a connection.");
 
-                await connectionGenericRepository.Delete(employeeId);
-                await connectionGenericRepository.SaveChanges();
+                await connectionUoW.Repository.Delete(employeeId);
+                await connectionUoW.SaveChangesAsync();
                 return Result.Success("Removal Successful.");
             }
             catch { throw; }
         }
+        #endregion
 
+        #region CONNECTION LIST
         public async Task<Result> ConnectionList(Guid employeeId)
         {
             try
             {
-                Employee employee = await employeeGenericRepository.ReadSingle(employeeId);
+                Employee employee = await employeeUoW.Repository.ReadSingle(employeeId);
 
                 if (employee != null)
                 {
-                    var allConnections = await connectionGenericRepository.ReadAll();
+                    var allConnections = await connectionUoW.Repository.ReadAll();
 
                     var employeeConnections = allConnections.Select(x => x.EmployeeId == employeeId).ToList();
 
@@ -101,5 +108,6 @@ namespace EmployeeService.Services.Implementations
             }
             catch { throw; }
         }
+        #endregion
     }
 }

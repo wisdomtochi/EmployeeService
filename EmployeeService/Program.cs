@@ -25,7 +25,8 @@ builder.Services.AddDbContext<EmployeeDbContext>(options =>
 });
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped(typeof(IUnitofWork<>), typeof(UnitofWork<>));
+builder.Services.AddScoped<IEmployeeServiceLogic, EmployeeServiceLogic>();
 builder.Services.AddScoped<IConnectionService, ConnectionService>();
 builder.Services.AddScoped<IConnectionRequestService, ConnectionRequestService>();
 

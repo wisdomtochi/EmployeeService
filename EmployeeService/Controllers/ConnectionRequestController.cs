@@ -7,36 +7,38 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class ConnectionRequestController : ControllerBase
     {
-        private readonly IConnectionRequestService connectionRequestLogic;
+        private readonly IConnectionRequestService connectionRequestservice;
 
-        public ConnectionRequestController(IConnectionRequestService connectionRequestLogic)
+        public ConnectionRequestController(IConnectionRequestService connectionRequestservice)
         {
-            this.connectionRequestLogic = connectionRequestLogic;
+            this.connectionRequestservice = connectionRequestservice;
         }
 
-        [HttpGet("{Id}")]
-        public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
-        {
-            var list = await connectionRequestLogic.GetConnectionRequestList(Id);
-            if (list == null)
-            {
-                return NotFound();
-            }
-            return Ok(list);
-        }
+        //[HttpGet("{Id}")]
+        //public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
+        //{
+        //    var list = await connectionRequestservice.GetConnectionRequestList(Id);
+        //    if (list == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(list);
+        //}
 
         [HttpGet("{receiverId}, {senderId}")]
-        public async Task<IActionResult> SendConnectionRequest(int receiverId, int senderId)
+        public async Task<IActionResult> SendConnectionRequest([FromRoute] Guid receiverId, [FromRoute] Guid senderId)
         {
-            await connectionRequestLogic.SendConnectionRequest(receiverId, senderId);
-            return Ok();
+            var result = await connectionRequestservice.SendConnectionRequest(receiverId, senderId);
+            if (result.Succeeded) return Ok(result.Message);
+
+            return BadRequest(result.Message);
         }
 
-        [HttpDelete("{employeeId}, {requestId}")]
-        public async Task<IActionResult> RemoveConnectionRequest(int employeeId, int requestId)
-        {
-            var result = await connectionRequestLogic.RemoveConnectionRequest(employeeId, requestId);
-            return Ok(result);
-        }
+        //[HttpDelete("{employeeId}, {requestId}")]
+        //public async Task<IActionResult> RemoveConnectionRequest(int employeeId, int requestId)
+        //{
+        //    var result = await connectionRequestLogic.RemoveConnectionRequest(employeeId, requestId);
+        //    return Ok(result);
+        //}
     }
 }

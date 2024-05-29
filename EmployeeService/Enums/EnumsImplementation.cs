@@ -2,12 +2,12 @@
 {
     public class EnumsImplementation
     {
-        public static string GetGender(GenderEnum gender)
+        public static string GetGender(Gender gender)
         {
             return gender switch
             {
-                GenderEnum.Male => "Male",
-                GenderEnum.Female => "Female",
+                Gender.Male => "Male",
+                Gender.Female => "Female",
                 _ => "Invalid data detected",
             };
         }
@@ -31,7 +31,7 @@
             return connectionRequestMessages switch
             {
                 ConnectionRequestMessagesEnum.Pending => "Pending",
-                ConnectionRequestMessagesEnum.RequestRemoved => "Request successfully removed from list.",
+                ConnectionRequestMessagesEnum.RequestAccepted => "Request successfully accepted from list.",
                 ConnectionRequestMessagesEnum.CannotDeleteRequest => "You can't delete an employee's request when you don't have a connection request message",
                 ConnectionRequestMessagesEnum.CouldNotBeFound => "The request Id or employee Id cannot be found in the database. Check that your entries are correct.",
                 _ => "Invalid data detected",

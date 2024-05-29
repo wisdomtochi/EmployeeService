@@ -7,20 +7,20 @@ namespace EmployeeService.Services.Implementations
 {
     public class ConnectionRequestService : IConnectionRequestService
     {
-        private readonly IGenericRepository<ConnectionRequest> connectionRequestGenericRepository;
-        private readonly IGenericRepository<Employee> employeeGenericRepository;
+        private readonly IUnitofWork<ConnectionRequest> connectionRequestUoW;
+        private readonly IUnitofWork<Employee> employeeUoW;
 
-        public ConnectionRequestService(IGenericRepository<ConnectionRequest> connectionRequestGenericRepository,
-                        IGenericRepository<Employee> employeeGenericRepository)
+        public ConnectionRequestService(IUnitofWork<ConnectionRequest> connectionRequestUoW,
+                        IUnitofWork<Employee> employeeUoW)
         {
-            this.connectionRequestGenericRepository = connectionRequestGenericRepository;
-            this.employeeGenericRepository = employeeGenericRepository;
+            this.connectionRequestUoW = connectionRequestUoW;
+            this.employeeUoW = employeeUoW;
         }
 
         public async Task<Result> SendConnectionRequest(Guid receiverId, Guid senderId)
         {
-            Employee receiver = await employeeGenericRepository.ReadSingle(receiverId);
-            Employee sender = await employeeGenericRepository.ReadSingle(senderId);
+            Employee receiver = await employeeUoW.Repository.ReadSingle(receiverId);
+            Employee sender = await employeeUoW.Repository.ReadSingle(senderId);
 
             if (receiver == null) return Result.Failure("Unable to find Receiver.");
 
@@ -33,8 +33,8 @@ namespace EmployeeService.Services.Implementations
                 RequestNotification = "Pending"
             };
 
-            await connectionRequestGenericRepository.Create(request);
-            await connectionRequestGenericRepository.SaveChanges();
+            await connectionRequestUoW.Repository.Create(request);
+            await connectionRequestUoW.SaveChangesAsync();
             return Result.Success("Created Successfully.");
         }
     }

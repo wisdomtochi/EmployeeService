@@ -3,7 +3,7 @@
     public enum ConnectionRequestMessagesEnum
     {
         Pending,
-        RequestRemoved,
+        RequestAccepted,
         CannotDeleteRequest,
         CouldNotBeFound
     }

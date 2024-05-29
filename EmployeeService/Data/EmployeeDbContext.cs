@@ -15,18 +15,16 @@ namespace EmployeeService.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Connection>()
-                .HasMany(e => e.Employees)
-                .WithMany(e => e.Connections);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql("CustomerDBConnection",
-                    new MySqlServerVersion(new Version(8, 0, 34)));
-            }
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    optionsBuilder.UseMySql("CustomerDBConnection",
+            //        new MySqlServerVersion(new Version(8, 0, 34)));
+            //}
         }
 
     }

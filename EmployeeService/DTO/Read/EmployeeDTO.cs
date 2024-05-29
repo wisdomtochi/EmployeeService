@@ -1,15 +1,17 @@
 ﻿using EmployeeService.Enums;
-using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace EmployeeService.Domains
+namespace EmployeeService.DTO.Read
 {
-    public class Employee
+    public class EmployeeDTO
     {
-        [Key]
+        [JsonPropertyName("id")]
         public Guid Id { get; set; }
+        [JsonPropertyName("firstname")]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Gender Gender { get; set; }
+        public string Email { get; set; }
         public int Salary { get; set; }
     }
 }

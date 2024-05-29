@@ -7,43 +7,47 @@ namespace EmployeeService.Controllers
     [ApiController]
     public class ConnectionController : ControllerBase
     {
-        private readonly IConnectionService connectionsLogic;
+        private readonly IConnectionService connectionsService;
 
-        public ConnectionController(IConnectionService connectionsLogic)
+        public ConnectionController(IConnectionService connectionsService)
         {
-            this.connectionsLogic = connectionsLogic;
+            this.connectionsService = connectionsService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployeeConnectionList(int id)
-        {
-            var result = await connectionsLogic.GetEmployeeConnectionList(id);
-            if (result == null)
-            {
-                return NotFound(result);
-            }
-            return Ok(result);
-        }
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetEmployeeConnectionList(int id)
+        //{
+        //    var result = await connectionsService.GetEmployeeConnectionList(id);
+        //    if (result == null)
+        //    {
+        //        return NotFound(result);
+        //    }
+        //    return Ok(result);
+        //}
 
         [HttpGet]
-        public async Task<IActionResult> AllConnections()
+        public async Task<IActionResult> EmployeeConnections([FromRoute] Guid employeeId)
         {
-            var result = await connectionsLogic.ConnectionList();
-            return Ok(result);
+            var result = await connectionsService.ConnectionList(employeeId);
+            if (result.Succeeded) return Ok(result.Message);
+
+            return BadRequest(result.Message);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEmployeeToConnection(int employeeId, int connectionId)
+        public async Task<IActionResult> AddEmployeeToConnection([FromRoute] Guid employeeId, [FromRoute] Guid friendId)
         {
-            var result = await connectionsLogic.AddToConnection(employeeId, connectionId);
+            var result = await connectionsService.AddToConnection(employeeId, friendId);
             return Ok(result);
         }
 
         [HttpDelete("{employeeId}, {connectionId}")]
-        public async Task<IActionResult> DeleteConnection(int employeeId, int connectionId)
+        public async Task<IActionResult> DeleteConnection([FromRoute] Guid employeeId, [FromRoute] Guid connectionId)
         {
-            var result = await connectionsLogic.DeleteFromConnection(employeeId, connectionId);
-            return Ok(result);
+            var result = await connectionsService.RemoveFromConnection(employeeId, connectionId);
+            if (result.Succeeded) return Ok(result.Message);
+
+            return BadRequest(result.Message);
         }
     }
 }
