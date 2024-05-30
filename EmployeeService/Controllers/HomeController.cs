@@ -18,13 +18,13 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEmployee([FromHeader] Guid id)
+        public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
             var result = await employeeService.GetEmployee(id);
             if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
             {
                 Status = true,
-                Results = new List<EmployeeDTO> { result.Data }
+                Result = result.Data
             });
 
             return BadRequest(result.Message);
@@ -34,8 +34,11 @@ namespace EmployeeService.Controllers
         public async Task<IActionResult> GetEmployees()
         {
             var result = await employeeService.GetAllEmployee();
-            if (result.Succeeded) return Ok(result.Message);
-
+            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            {
+                Status = true,
+                Results = result.Data
+            });
 
             return BadRequest(result.Message);
         }
@@ -46,8 +49,12 @@ namespace EmployeeService.Controllers
             try
             {
                 var result = await employeeService.CreateEmployee(employee);
-                if (result.Succeeded) return Ok(result.Message);
-                //return Ok(result.);
+                if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
+
                 return BadRequest(result.Message);
             }
             catch
@@ -57,10 +64,14 @@ namespace EmployeeService.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateEmployee([FromRoute] Guid Id, [FromBody] EmployeeDTOw employee)
+        public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, [FromBody] EmployeeDTOw employee)
         {
-            var result = await employeeService.UpdateEmployee(Id, employee);
-            if (result.Succeeded) return Ok(result.Message);
+            var result = await employeeService.UpdateEmployee(id, employee);
+            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            {
+                Status = true,
+                Message = result.Message
+            });
 
             return BadRequest(result.Message);
         }
@@ -69,7 +80,11 @@ namespace EmployeeService.Controllers
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
             var result = await employeeService.DeleteEmployee(id);
-            if (result.Succeeded) return Ok(result.Message);
+            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            {
+                Status = true,
+                Message = result.Message
+            });
 
             return BadRequest(result.Message);
         }

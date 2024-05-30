@@ -3,6 +3,7 @@ using EmployeeService.Domains;
 using EmployeeService.DTO.Read;
 using EmployeeService.DTO.Write;
 using EmployeeService.Helpers;
+using EmployeeService.Mappers;
 using EmployeeService.Services.Interfaces;
 
 namespace EmployeeService.Services.Implementations
@@ -16,25 +17,29 @@ namespace EmployeeService.Services.Implementations
             this.employeeUoW = employeeUoW;
         }
 
-        public async Task<Result<List<Employee>>> GetAllEmployee()
+        public async Task<Result<List<EmployeeDTO>>> GetAllEmployee()
         {
             var employeeList = await employeeUoW.Repository.ReadAll();
 
-            if (!employeeList.Any()) return Result.Failure<List<Employee>>("No Employee Found.");
+            if (!employeeList.Any()) return Result.Failure<List<EmployeeDTO>>("No Employee Found.");
 
-            return Result.Success(employeeList.ToList());
+            List<EmployeeDTO> employees = Map.Employees(employeeList.ToList());
+
+            return Result.Success(employees);
         }
 
         public async Task<Result<EmployeeDTO>> GetEmployee(Guid id)
         {
-            var employee = await employeeUoW.Repository.ReadSingle(id);
+            var EmployeeExist = await employeeUoW.Repository.ReadSingle(id);
 
-            if (employee == null) return Result.Failure<EmployeeDTO>("Employee Not Found.");
+            if (EmployeeExist == null) return Result.Failure<EmployeeDTO>("Employee Not Found.");
+
+            var employee = Map.Employees(new List<Employee> { EmployeeExist }).FirstOrDefault();
 
             return Result.Success(employee);
         }
 
-        public async Task<Result<Employee>> CreateEmployee(EmployeeDTOw employee)
+        public async Task<Result> CreateEmployee(EmployeeDTOw employee)
         {
             try
             {
@@ -49,7 +54,7 @@ namespace EmployeeService.Services.Implementations
 
                 await employeeUoW.Repository.Create(newEmployee);
                 await employeeUoW.SaveChangesAsync();
-                return Result.Success(newEmployee, "Employee Created Successfully.");
+                return Result.Success("Employee Created Successfully.");
             }
             catch { throw; }
         }
@@ -72,6 +77,7 @@ namespace EmployeeService.Services.Implementations
             var employee = await employeeUoW.Repository.ReadSingle(id);
             if (employee != null)
             {
+                employee.Id = id;
                 employee.FirstName = employeeModel.FirstName;
                 employee.LastName = employeeModel.LastName;
                 employee.Gender = employeeModel.Gender;
@@ -81,7 +87,7 @@ namespace EmployeeService.Services.Implementations
                 await employeeUoW.SaveChangesAsync();
                 return Result.Success("Updated Successfully.");
             }
-            return Result.Failure("Unable to Update.");
+            return Result.Failure("Employee Not Found.");
         }
     }
 }

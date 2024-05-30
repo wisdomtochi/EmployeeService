@@ -11,7 +11,6 @@ namespace EmployeeService.DTO.Read
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public Gender Gender { get; set; }
-        public string Email { get; set; }
         public int Salary { get; set; }
     }
 }
