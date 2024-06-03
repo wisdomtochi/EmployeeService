@@ -1,5 +1,6 @@
 ﻿using EmployeeService.DTO.Read;
 using EmployeeService.DTO.Write;
+using EmployeeService.Enums;
 using EmployeeService.Helpers;
 using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -37,10 +38,32 @@ namespace EmployeeService.Controllers
             if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
             {
                 Status = true,
-                Results = result.Data
+                Results = result.Data,
+                Message = result.Message
             });
 
             return BadRequest(result.Message);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string name, Gender? gender)
+        {
+            try
+            {
+                var result = await employeeService.Search(name, gender);
+
+                if (result.Data.Any()) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Results = result.Data
+                });
+
+                return NotFound();
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving value from server.");
+            }
         }
 
         [HttpPost]
@@ -59,7 +82,7 @@ namespace EmployeeService.Controllers
             }
             catch
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving value from server.");
             }
         }
 

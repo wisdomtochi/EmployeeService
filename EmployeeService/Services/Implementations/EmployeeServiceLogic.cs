@@ -2,6 +2,7 @@
 using EmployeeService.Domains;
 using EmployeeService.DTO.Read;
 using EmployeeService.DTO.Write;
+using EmployeeService.Enums;
 using EmployeeService.Helpers;
 using EmployeeService.Mappers;
 using EmployeeService.Services.Interfaces;
@@ -23,9 +24,9 @@ namespace EmployeeService.Services.Implementations
 
             if (!employeeList.Any()) return Result.Failure<List<EmployeeDTO>>("No Employee Found.");
 
-            List<EmployeeDTO> employees = Map.Employees(employeeList.ToList());
+            List<EmployeeDTO> employees = Map.Employees(employeeList);
 
-            return Result.Success(employees);
+            return Result.Success(employees, "List of Employees.");
         }
 
         public async Task<Result<EmployeeDTO>> GetEmployee(Guid id)
@@ -69,7 +70,7 @@ namespace EmployeeService.Services.Implementations
                 await employeeUoW.SaveChangesAsync();
                 return Result.Success("Deleted Successfully.");
             }
-            return Result.Failure("Unable to Delete.");
+            return Result.Failure("Employee Not Found.");
         }
 
         public async Task<Result> UpdateEmployee(Guid id, EmployeeDTOw employeeModel)
@@ -88,6 +89,27 @@ namespace EmployeeService.Services.Implementations
                 return Result.Success("Updated Successfully.");
             }
             return Result.Failure("Employee Not Found.");
+        }
+
+        public async Task<Result<List<EmployeeDTO>>> Search(string name, Gender? gender)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name)) return Result.Failure<List<EmployeeDTO>>("Name cannot be empty.");
+
+                var employeeList = await employeeUoW.Repository.ReadAll();
+
+                IQueryable<Employee> query = employeeList.AsQueryable();
+
+                query.Where(e => e.FirstName.Contains(name) || e.FirstName.Contains(name));
+
+                if (gender != null) { query.Where(e => e.Gender == gender); }
+
+                var employees = Map.Employees(query);
+
+                return Result.Success(employees);
+            }
+            catch { throw; }
         }
     }
 }

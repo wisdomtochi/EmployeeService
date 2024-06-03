@@ -5,7 +5,7 @@ namespace EmployeeService.Mappers
 {
     public static class Map
     {
-        public static List<EmployeeDTO> Employees(ICollection<Employee> source)
+        public static List<EmployeeDTO> Employees(IEnumerable<Employee> source)
         {
             List<EmployeeDTO> employeeDTOs = source.Select(x => new EmployeeDTO()
             {
