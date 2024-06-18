@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EmployeeService.Migrations
 {
     [DbContext(typeof(EmployeeDbContext))]
-    [Migration("20240529033524_ChangedDatabaseFields")]
-    partial class ChangedDatabaseFields
+    [Migration("20240613220536_AdjustedTheTables")]
+    partial class AdjustedTheTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

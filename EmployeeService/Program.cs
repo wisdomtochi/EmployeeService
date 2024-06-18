@@ -1,4 +1,4 @@
-using EmployeeService.Data;
+using EmployeeService.Data.Context;
 using EmployeeService.DataAccess.Implementation;
 using EmployeeService.DataAccess.Interfaces;
 using EmployeeService.Services.Implementations;
@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-string dbcon = builder.Configuration.GetConnectionString("CustomerDBConnection");
+string dbcon = builder.Configuration.GetConnectionString("EmployeeDBConnection");
 builder.Services.AddDbContext<EmployeeDbContext>(options =>
 {
     options.UseMySql(dbcon, ServerVersion.AutoDetect(dbcon), sqlopt =>

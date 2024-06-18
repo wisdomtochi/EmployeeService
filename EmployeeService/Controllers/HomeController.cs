@@ -21,28 +21,58 @@ namespace EmployeeService.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
-            var result = await employeeService.GetEmployee(id);
-            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            try
             {
-                Status = true,
-                Result = result.Data
-            });
+                var result = await employeeService.GetEmployee(id);
+                if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Result = result.Data
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetEmployees()
+        public async Task<IActionResult> GetAllEmployees()
         {
-            var result = await employeeService.GetAllEmployee();
-            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            try
             {
-                Status = true,
-                Results = result.Data,
-                Message = result.Message
-            });
+                var result = await employeeService.GetAllEmployee();
+                if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Results = result.Data,
+                    Message = result.Message
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpGet]
@@ -60,9 +90,13 @@ namespace EmployeeService.Controllers
 
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving value from server.");
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
             }
         }
 
@@ -78,38 +112,76 @@ namespace EmployeeService.Controllers
                     Message = result.Message
                 });
 
-                return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error retrieving value from server.");
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
             }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, [FromBody] EmployeeDTOw employee)
         {
-            var result = await employeeService.UpdateEmployee(id, employee);
-            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            try
             {
-                Status = true,
-                Message = result.Message
-            });
+                var result = await employeeService.UpdateEmployee(id, employee);
+                if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
-            var result = await employeeService.DeleteEmployee(id);
-            if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+            try
             {
-                Status = true,
-                Message = result.Message
-            });
+                var result = await employeeService.DeleteEmployee(id);
+                if (result.Succeeded) return Ok(new JsonMessage<EmployeeDTO>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using EmployeeService.Data;
+﻿using EmployeeService.Data.Context;
 using EmployeeService.DataAccess.Interfaces;
 
 namespace EmployeeService.DataAccess.Implementation
