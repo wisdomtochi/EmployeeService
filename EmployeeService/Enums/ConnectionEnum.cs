@@ -1,11 +1,12 @@
 ﻿namespace EmployeeService.Enums
 {
-    public enum ConnectionMessagesEnum
+    public enum ConnectionEnum
     {
         Accepted,
         AddedtoConnection,
         AlreadyInYourConnectionList,
         CouldNotBeFound,
+        CannotAdd,
         CannotDelete,
         EmployeeDeleted
     }

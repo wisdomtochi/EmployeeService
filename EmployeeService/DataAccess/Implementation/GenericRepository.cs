@@ -42,5 +42,10 @@ namespace EmployeeService.DataAccess.Implementation
             var entity = await _dbSet.FindAsync(id);
             _dbSet.Remove(entity);
         }
+
+        public async Task Delete(T entity)
+        {
+            _dbSet.Remove(entity);
+        }
     }
 }

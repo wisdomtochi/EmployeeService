@@ -1,5 +1,4 @@
-﻿using EmployeeService.Enums;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace EmployeeService.DTO.Read
 {
@@ -10,7 +9,7 @@ namespace EmployeeService.DTO.Read
         [JsonPropertyName("firstname")]
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         public int Salary { get; set; }
     }
 }

@@ -9,8 +9,8 @@ namespace EmployeeService.Services.Interfaces
     {
         Task<Result<EmployeeDTO>> GetEmployee(Guid id);
         Task<Result<List<EmployeeDTO>>> GetAllEmployee();
-        Task<Result> CreateEmployee(EmployeeDTOw employee);
-        Task<Result> UpdateEmployee(Guid id, EmployeeDTOw employeeModel);
+        Task<Result<EmployeeDTO>> CreateEmployee(EmployeeDTOw employee);
+        Task<Result<EmployeeDTO>> UpdateEmployee(Guid id, EmployeeDTOw employeeModel);
         Task<Result> DeleteEmployee(Guid employeeId);
         Task<Result<List<EmployeeDTO>>> Search(string name, Gender? gender);
     }

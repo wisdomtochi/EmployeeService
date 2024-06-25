@@ -6,6 +6,7 @@
         Task<IEnumerable<T>> ReadAll();
         Task<T> Create(T entity);
         Task Delete(Guid id);
+        Task Delete(T entity);
         void Update(T entity);
     }
 }

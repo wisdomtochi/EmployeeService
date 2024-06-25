@@ -20,17 +20,13 @@ namespace EmployeeService.Migrations
             //    name: "IX_Employees_EmployeeId",
             //    table: "Employees");
 
-            //migrationBuilder.DropPrimaryKey(
-            //    name: "PK_Connections",
-            //    table: "Connections");
+
 
             //migrationBuilder.DropColumn(
             //    name: "EmployeeId",
             //    table: "Employees");
 
-            //migrationBuilder.DropColumn(
-            //    name: "Id",
-            //    table: "Connections");
+
 
             migrationBuilder.AlterColumn<Guid>(
                 name: "Id",

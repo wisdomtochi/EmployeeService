@@ -1,9 +1,11 @@
-﻿using EmployeeService.Services.Interfaces;
+﻿using EmployeeService.DTO.Read;
+using EmployeeService.Helpers;
+using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/connect/[action]")]
+    [Route("api/connect/")]
     [ApiController]
     public class ConnectionController : ControllerBase
     {
@@ -14,40 +16,97 @@ namespace EmployeeService.Controllers
             this.connectionsService = connectionsService;
         }
 
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetEmployeeConnectionList(int id)
-        //{
-        //    var result = await connectionsService.GetEmployeeConnectionList(id);
-        //    if (result == null)
-        //    {
-        //        return NotFound(result);
-        //    }
-        //    return Ok(result);
-        //}
-
         [HttpGet]
+        [Route("employee/getConnectionList/{employeeId}")]
         public async Task<IActionResult> EmployeeConnections([FromRoute] Guid employeeId)
         {
-            var result = await connectionsService.ConnectionList(employeeId);
-            if (result.Succeeded) return Ok(result.Message);
+            try
+            {
+                var result = await connectionsService.ConnectionList(employeeId);
+                if (result.Succeeded) return Ok(new JsonMessage<ConnectionDTO>()
+                {
+                    Status = true,
+                    Results = result.Data
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
         [HttpPost]
+        [Route("employee/addToConnection/{employeeId}/{friendId}")]
         public async Task<IActionResult> AddEmployeeToConnection([FromRoute] Guid employeeId, [FromRoute] Guid friendId)
         {
-            var result = await connectionsService.AddToConnection(employeeId, friendId);
-            return Ok(result);
+            try
+            {
+                var result = await connectionsService.AddToConnection(employeeId, friendId);
+                if (result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null) return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.InnerException.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
-        [HttpDelete("{employeeId}, {connectionId}")]
+        [HttpDelete]
+        [Route("employee/removeFromConnection/{employeeId}/{connectionId}")]
         public async Task<IActionResult> DeleteConnection([FromRoute] Guid employeeId, [FromRoute] Guid connectionId)
         {
-            var result = await connectionsService.RemoveFromConnection(employeeId, connectionId);
-            if (result.Succeeded) return Ok(result.Message);
+            try
+            {
+                var result = await connectionsService.RemoveFromConnection(employeeId, connectionId);
+                if (result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
 
-            return BadRequest(result.Message);
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
     }
 }

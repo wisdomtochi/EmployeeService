@@ -40,7 +40,7 @@ namespace EmployeeService.Services.Implementations
             return Result.Success(employee);
         }
 
-        public async Task<Result> CreateEmployee(EmployeeDTOw employee)
+        public async Task<Result<EmployeeDTO>> CreateEmployee(EmployeeDTOw employee)
         {
             try
             {
@@ -55,7 +55,9 @@ namespace EmployeeService.Services.Implementations
 
                 await employeeUoW.Repository.Create(newEmployee);
                 await employeeUoW.SaveChangesAsync();
-                return Result.Success("Employee Created Successfully.");
+
+                var employeeDTO = Map.Employees(new List<Employee> { newEmployee }).FirstOrDefault();
+                return Result.Success(employeeDTO, "Employee Created Successfully.");
             }
             catch { throw; }
         }
@@ -73,7 +75,7 @@ namespace EmployeeService.Services.Implementations
             return Result.Failure("Employee Not Found.");
         }
 
-        public async Task<Result> UpdateEmployee(Guid id, EmployeeDTOw employeeModel)
+        public async Task<Result<EmployeeDTO>> UpdateEmployee(Guid id, EmployeeDTOw employeeModel)
         {
             var employee = await employeeUoW.Repository.ReadSingle(id);
             if (employee != null)
@@ -86,9 +88,12 @@ namespace EmployeeService.Services.Implementations
 
                 employeeUoW.Repository.Update(employee);
                 await employeeUoW.SaveChangesAsync();
-                return Result.Success("Updated Successfully.");
+
+                var employeeDTO = Map.Employees(new List<Employee> { employee }).FirstOrDefault();
+                return Result.Success(employeeDTO, "Updated Successfully.");
             }
-            return Result.Failure("Employee Not Found.");
+
+            return Result.Failure<EmployeeDTO>("Employee Not Found.");
         }
 
         public async Task<Result<List<EmployeeDTO>>> Search(string name, Gender? gender)
@@ -99,15 +104,13 @@ namespace EmployeeService.Services.Implementations
 
                 var employeeList = await employeeUoW.Repository.ReadAll();
 
-                IQueryable<Employee> query = employeeList.AsQueryable();
+                var employees = employeeList.Where(e => e.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase) || e.FirstName.Contains(name, StringComparison.OrdinalIgnoreCase));
 
-                query.Where(e => e.FirstName.Contains(name) || e.FirstName.Contains(name));
+                if (gender.HasValue) { employees = employees.Where(e => e.Gender == gender.Value); }
 
-                if (gender != null) { query.Where(e => e.Gender == gender); }
+                var result = Map.Employees(employees);
 
-                var employees = Map.Employees(query);
-
-                return Result.Success(employees);
+                return Result.Success(result);
             }
             catch { throw; }
         }

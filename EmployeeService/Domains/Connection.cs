@@ -6,6 +6,7 @@ namespace EmployeeService.Domains
     {
         [Key]
         public Guid EmployeeId { get; set; }
+        [Key]
         public Guid FriendId { get; set; }
     }
 }

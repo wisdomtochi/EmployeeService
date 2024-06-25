@@ -12,28 +12,28 @@
             };
         }
 
-        public static string ConfirmationMessage(ConnectionMessagesEnum message)
+        public static string ConfirmationMessage(ConnectionEnum message)
         {
             return message switch
             {
-                ConnectionMessagesEnum.Accepted => "Accepted",
-                ConnectionMessagesEnum.AddedtoConnection => "Added to connection",
-                ConnectionMessagesEnum.AlreadyInYourConnectionList => "Already in your connection list",
-                ConnectionMessagesEnum.CannotDelete => "Cannot delete. Add to connection first",
-                ConnectionMessagesEnum.CouldNotBeFound => "The Employee or Connection could not be found in the database",
-                ConnectionMessagesEnum.EmployeeDeleted => "Employee successfully deleted from your connections",
+                ConnectionEnum.Accepted => "Accepted",
+                ConnectionEnum.AddedtoConnection => "Added to connection",
+                ConnectionEnum.AlreadyInYourConnectionList => "Already in your connection list",
+                ConnectionEnum.CannotAdd => "Connection Request Not Found. Add To Connection First.",
+                ConnectionEnum.CannotDelete => "Cannot delete. Add to connection first",
+                ConnectionEnum.CouldNotBeFound => "Connection Not Found.",
+                ConnectionEnum.EmployeeDeleted => "Employee successfully deleted from your connections.",
                 _ => "Try Again",
             };
         }
 
-        public static string ConfirmationMessage(ConnectionRequestMessagesEnum connectionRequestMessages)
+        public static string ConfirmationMessage(RequestEnum connectionRequestMessages)
         {
             return connectionRequestMessages switch
             {
-                ConnectionRequestMessagesEnum.Pending => "Pending",
-                ConnectionRequestMessagesEnum.RequestAccepted => "Request successfully accepted from list.",
-                ConnectionRequestMessagesEnum.CannotDeleteRequest => "You can't delete an employee's request when you don't have a connection request message",
-                ConnectionRequestMessagesEnum.CouldNotBeFound => "The request Id or employee Id cannot be found in the database. Check that your entries are correct.",
+                RequestEnum.Pending => "Pending",
+                RequestEnum.RequestAccepted => "Request Accepted Successfully ",
+                RequestEnum.RequestSent => "Request Sent Successfully.",
                 _ => "Invalid data detected",
             };
         }

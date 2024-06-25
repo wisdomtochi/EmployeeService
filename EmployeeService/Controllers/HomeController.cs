@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/home/[action]")]
+    [Route("api/home/")]
     [ApiController]
     public class EmployeesController : ControllerBase
     {
@@ -18,7 +18,8 @@ namespace EmployeeService.Controllers
             this.employeeService = employeeService;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("employees/GetEmployee/{id}")]
         public async Task<IActionResult> GetEmployee([FromRoute] Guid id)
         {
             try
@@ -47,6 +48,7 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet]
+        [Route("allEmployees")]
         public async Task<IActionResult> GetAllEmployees()
         {
             try
@@ -76,6 +78,7 @@ namespace EmployeeService.Controllers
         }
 
         [HttpGet]
+        [Route("employees/search")]
         public async Task<IActionResult> Search(string name, Gender? gender)
         {
             try
@@ -101,6 +104,7 @@ namespace EmployeeService.Controllers
         }
 
         [HttpPost]
+        [Route("employees/createemployee")]
         public async Task<IActionResult> CreateEmployee([FromBody] EmployeeDTOw employee)
         {
             try
@@ -128,7 +132,8 @@ namespace EmployeeService.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
+        [Route("employees/updateEmployee/{id}")]
         public async Task<IActionResult> UpdateEmployee([FromRoute] Guid id, [FromBody] EmployeeDTOw employee)
         {
             try
@@ -156,7 +161,8 @@ namespace EmployeeService.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
+        [Route("employees/deleteEmployee/{id}")]
         public async Task<IActionResult> DeleteEmployee(Guid id)
         {
             try

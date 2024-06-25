@@ -1,9 +1,11 @@
-﻿using EmployeeService.Services.Interfaces;
+﻿using EmployeeService.DTO.Read;
+using EmployeeService.Helpers;
+using EmployeeService.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeService.Controllers
 {
-    [Route("api/connectionrequest/[action]")]
+    [Route("api/connectionrequest/")]
     [ApiController]
     public class ConnectionRequestController : ControllerBase
     {
@@ -14,31 +16,112 @@ namespace EmployeeService.Controllers
             this.connectionRequestservice = connectionRequestservice;
         }
 
-        //[HttpGet("{Id}")]
-        //public async Task<IActionResult> GetEmployeeConnectionRequest(int Id)
-        //{
-        //    var list = await connectionRequestservice.GetConnectionRequestList(Id);
-        //    if (list == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Ok(list);
-        //}
-
-        [HttpGet("{receiverId}, {senderId}")]
-        public async Task<IActionResult> SendConnectionRequest([FromRoute] Guid receiverId, [FromRoute] Guid senderId)
+        [HttpGet]
+        [Route("employee/getConnectionRequests/{employeeId}")]
+        public async Task<IActionResult> GetConnectionRequest([FromRoute] Guid employeeId)
         {
-            var result = await connectionRequestservice.SendConnectionRequest(receiverId, senderId);
-            if (result.Succeeded) return Ok(result.Message);
+            try
+            {
+                var result = await connectionRequestservice.GetConnectionRequests(employeeId);
 
-            return BadRequest(result.Message);
+                if (result.Succeeded) return Ok(new JsonMessage<RequestDTO>()
+                {
+                    Status = true,
+                    Results = result.Data
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null) return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.InnerException.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
         }
 
-        //[HttpDelete("{employeeId}, {requestId}")]
-        //public async Task<IActionResult> RemoveConnectionRequest(int employeeId, int requestId)
-        //{
-        //    var result = await connectionRequestLogic.RemoveConnectionRequest(employeeId, requestId);
-        //    return Ok(result);
-        //}
+        [HttpGet]
+        [Route("employee/sendConnectionRequest/{receiverId}/{senderId}")]
+        public async Task<IActionResult> SendConnectionRequest([FromRoute] Guid receiverId, [FromRoute] Guid senderId)
+        {
+            try
+            {
+                var result = await connectionRequestservice.SendConnectionRequest(receiverId, senderId);
+
+                if (result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null) return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.InnerException.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
+        }
+
+        [HttpGet]
+        [Route("employee/cancelConnectionRequest/{senderId}/{receiverId}")]
+        public async Task<IActionResult> CancelConnectionRequest([FromRoute] Guid senderId, [FromRoute] Guid receiverId)
+        {
+            try
+            {
+                var result = await connectionRequestservice.RemoveConnectionRequest(senderId, receiverId);
+
+                if (result.Succeeded) return Ok(new JsonMessage<string>()
+                {
+                    Status = true,
+                    Message = result.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = result.Message
+                });
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException != null) return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.InnerException.Message
+                });
+
+                return Ok(new JsonMessage<string>()
+                {
+                    Status = false,
+                    Message = ex.Message
+                });
+            }
+        }
     }
 }
